@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* -------------------------------------------------------------------------- */
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.logo {
+    width: 100px;
+    height: auto;
+}
+
+/* -------------------------------------------------------------------------- */
+
+
+.main-div {
+    width: 500px;
+    height: 380px;
+    margin: auto;
+    display: grid;
+    grid-template-rows: repeat(24, 40px); /* 각 열(가로줄)의 길이 */
+    gap: 10px; /* 자식요소간의 간격 */
+}
+
+.box {
+    height: 320px;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 50px;
+    border: 2px solid #ccc;
+    border-radius: 15px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;  /* 수직 정렬 */
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+
+.login {
+    grid-row: 1 / 13;
+}
+
+.userid, .userpw {
+    width: 100%;
+    height: 60px;
+    font-size: 25px;
+    padding-left: 70px;
+    box-sizing: border-box;
+}
+
+.userid {
+    border: 2px solid #ccc;
+    border-bottom: none;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.userpw {
+    border: 2px solid #ccc;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+button[type="submit"] {
+    width: 400px;
+    padding: 15px;
+    font-size: 18px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 40px;
+}
+
+/* 버튼 호버 효과 */
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.input-with-icon.id::before {
+    margin-left: 10px;
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png');
+    background-position: -687px -127px; /* 이미지의 특정 부분을 선택합니다 */
+    background-repeat: no-repeat;
+}
+
+.input-with-icon.pw::before {
+    margin-left: 10px;
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png');
+    background-position: -624px 0px; /* 이미지의 특정 부분을 선택합니다 */
+    background-repeat: no-repeat;
+}
+
+.login-links {
+    font-size: 16px;
+    color: #5f5f5f;
+    text-align: center; /* 텍스트 가운데 정렬 */
+    margin-top: 10px; /* main-div 바로 아래에 붙이기 위해 여백 설정 */
+}
+
+.login-links a {
+    text-decoration: none;
+    color: #5f5f5f;
+    margin: 0 10px;  /* 좌우 간격 10px 추가 */
+}
+
+.login-links a:hover {
+    text-decoration: underline;
+}

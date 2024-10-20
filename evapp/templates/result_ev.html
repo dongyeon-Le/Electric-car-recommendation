@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>전기차 살까? 말까?</title>
+    {% load static %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+            background-image: url('/static/image/paper.jpg');
+            background-size: cover; /* 이미지 크기를 배경에 맞게 조정 */
+            background-position: center; /* 이미지 위치 중앙 */
+            background-repeat: no-repeat; /* 이미지 반복하지 않음 */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            text-align: center;
+            color: #014fa2;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .card-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1600px;
+            margin-bottom: 20px;
+        }
+        .card-row.centered {
+            justify-content: center; /* 가운데 정렬 */
+        }
+        .card {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.2s;
+            width: 300px; /* 카드 폭 */
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+            transition: opacity 0.3s;
+            margin-bottom: 100px;
+        }
+        .card img.graph {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
+        .card:hover img.graph {
+            opacity: 1;
+        }
+        .card-content {
+            padding: 15px;
+            text-align: center;
+        }
+        .card-content h3, .card-content p {
+            margin: 8px 0;
+        }
+        .price-info {
+            display: inline-block;
+            position: relative;
+        }
+        .price-info .tooltip {
+            visibility: hidden;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 5px;
+            position: absolute;
+            bottom: 180%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s;
+            width: 300px;
+        }
+        .price-info:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .info-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+        }
+        .card-content a {
+            text-decoration: none; /* 밑줄 제거 */
+            color: inherit; /* 부모 요소의 색상 상속 */
+        }
+
+        .card-content a:hover {
+            color: inherit; /* 부모 요소의 색상 상속 */
+        }
+    </style>
+</head>
+<body>
+    <h1>전기차 살까? 말까? | TOP 5</h1>
+
+    <div class="card-row">
+        {% for car in results|slice:":3" %}
+        <div class="card">
+            <div class="card-content">
+                <a href="{% url 'ev_result' %}?id={{ car.id }}&years={{ years }}&km={{ km }}&distance={{ distance }}&city={{ city }}">
+                <input type="hidden" value="{{ car.id }}">
+                <h3>{{ car.브랜드 }} {{ car.모델명 }}</h3>
+                <div class="image-container">
+                    <img src="{% static 'image/carimg/' %}{{ car.사진 }}" alt="{{ car.모델명 }}">
+                    <img src="data:image/png;base64,{{ car.graph_img }}" alt="점수 그래프" class="graph">
+                </div>
+                <p><strong>{{ car.세부모델명 }}</strong></p>
+                <div class="price-info">
+                    <p>실구매가: <strong>{{ car.할인된_가격 }}</strong></p>
+                    <div class="tooltip">
+                        {{ car.가격 }} - {{ car.국가보조금 }} - {{ car.지자체보조금 }} = {{ car.할인된_가격 }}
+                    </div>
+                </div>
+                <div class="info-line">
+                    <p>배터리: <strong>{{ car.배터리용량 }} kWh</strong></p>
+                    <p>전비: <strong>{{ car.복합전비 }} km/kWh</strong></p>
+                </div>
+                <div class="info-line">
+                    <p>주행거리: <strong>{{ car.주행거리 }}</strong></p>
+                    <p>충전주기: <strong>{{ car.충전주기 }}</strong></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="card-row centered">
+        {% for car in results|slice:"3:5" %}
+        <div class="card">
+            <div class="card-content">
+                <a href="{% url 'ev_result' %}?id={{ car.id }}&years={{ years }}&km={{ km }}&distance={{ distance }}&city={{ city }}">
+                <h3>{{ car.브랜드 }} {{ car.모델명 }}</h3>
+                <div class="image-container">
+                    <img src="{% static 'image/carimg/' %}{{ car.사진 }}" alt="{{ car.모델명 }}">
+                    <img src="data:image/png;base64,{{ car.graph_img }}" alt="점수 그래프" class="graph">
+                </div>
+                <p><strong>{{ car.세부모델명 }}</strong></p>
+                <div class="price-info">
+                    <p>실구매가: <strong>{{ car.할인된_가격 }}</strong></p>
+                    <div class="tooltip">
+                        {{ car.가격 }} - {{ car.국가보조금 }} - {{ car.지자체보조금 }} = {{ car.할인된_가격 }}
+                    </div>
+                </div>
+                <div class="info-line">
+                    <p>배터리: <strong>{{ car.배터리용량 }} kWh</strong></p>
+                    <p>전비: <strong>{{ car.복합전비 }} km/kWh</strong></p>
+                </div>
+                <div class="info-line">
+                    <p>주행거리: <strong>{{ car.주행거리 }}</strong></p>
+                    <p>충전주기: <strong>{{ car.충전주기 }}</strong></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,250 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
+
+body {
+    font-family: 'Nanum Gothic', sans-serif;
+    background-image: url('/static/image/paper.jpg');
+    background-size: cover; /* 이미지 크기를 배경에 맞게 조정 */
+    background-position: center; /* 이미지 위치 중앙 */
+    background-repeat: no-repeat; /* 이미지 반복하지 않음 */
+    min-height: 100vh;
+    margin: 0;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 1200px;
+    gap: 20px;
+    padding: 20px;
+}
+
+.left-column, .right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.right-column {
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+}
+
+#map {
+    width: 100%;
+    height: 400px;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#subsidy-plot {
+    text-align: center;
+}
+
+#subsidy-plot img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#subsidy-plot p {
+    font-size: 18px;
+    color: #444;
+    margin-top: 10px;
+}
+
+#distance-info, #charger-info {
+    font-size: 18px;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+#charger-score, #subsidy-rank, #result-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* 점수와 막대 바 사이 간격 조정 */
+}
+
+#charger-count, #subsidy-info, #result {
+    font-size: 18px;
+    text-align: center;
+}
+
+#charger-score-bar, #subsidy-rank-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#charger-score-fill{
+    height: 100%;
+    background-color: #87CEEB;
+    width: 0;
+    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#subsidy-rank-fill {
+    height: 100%;
+    background-color: #A8E83C;
+    width: 0;
+    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#charger-score-text, #subsidy-rank-value {
+    color: black;
+    font-weight: bold;
+    z-index: 1;
+}
+
+#result-bar {
+    display: flex;
+    width: 100%;
+    height: 30px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.result-segment {
+    flex: 1;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.3;
+}
+
+#result-segment-low {
+    background-color: #ff4d4d;
+}
+
+#result-segment-mid {
+    background-color: #ffa500;
+}
+
+#result-segment-high {
+    background-color: #4caf50;
+}
+
+#result-segment-top {
+    background-color: #00bfff;
+}
+
+.active-segment {
+    opacity: 1;
+    border: 2px solid #000; /* 검은색 테두리 */
+}
+
+.divider {
+    width: 100%;
+    border-top: 1px dashed #ccc; /* 점선 스타일 */
+    margin: 20px 0; /* 위아래 여백 */
+}
+
+#result-text {
+    margin: 50px 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.button-form {
+    width: 100%;
+    padding: 0.8em;
+    background-color: #87CEEB; /* 기본 민트색 배경 */
+    color: #333; /* 짙은 색 텍스트 */
+    border: none; /* 테두리 없음 */
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center; /* 텍스트 중앙 정렬 */
+    margin-bottom: 50px;
+}
+
+.button-form:hover {
+    background-color: #5BA4C0; /* 호버 시 더 어두운 민트색 */
+}
+
+/* 하이브리드 보기 버튼 스타일 */
+.hybrid-link {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #007bff; /* 파란색 글씨 */
+    text-decoration: underline;
+    font-size: 1em;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 50px;
+}
+
+.hybrid-link:hover {
+    color: #0056b3; /* 더 어두운 파란색 */
+}
+
+/* 인포윈도우 스타일 */
+.info-window {
+    width: 200px;
+    padding: 10px;
+    border: none;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: 'Arial', sans-serif;
+    font-size: 16px; /* 기본 폰트 크기 */
+}
+
+.info-window h3 {
+    margin: 0 0 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.info-window p {
+    margin: 5px 0;
+    font-size: 12px;
+}
+
+.info-window .info-images {
+    margin-bottom: 5px;
+}
+
+.info-window .info-details {
+    display: flex;
+    gap: 10px;
+    margin: 5px 0;
+}
+
+.info-window .info-details p {
+    margin: 0;
+}

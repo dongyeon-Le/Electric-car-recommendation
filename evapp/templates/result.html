@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>차량 정보</title>
+    {% load static %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #014fa2;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #014fa2;
+            color: #fff;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #d8e6f5;
+        }
+        img {
+            width: 300px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .table-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>차량 정보</h1>
+    <table>
+        <tr>
+            <th>사진</th>
+            <th>브랜드</th>
+            <th>모델명</th>
+            <th>세부모델명</th>
+            <th>차종</th>
+            <th>가격</th>
+            <th>보조금 총액</th>
+            <th>가격 - 보조금</th>
+            <th>배터리용량 (kWh)</th>
+            <th>복합 전비 (km/kWh)</th>
+            <th>주행거리 (km)</th>
+            <th>충전주기</th>
+            <th>점수 그래프</th>
+        </tr>
+        {% for car in results %}
+        <tr>
+            <td><img src="{% static 'image/carimg/' %}{{ car.사진 }}"></td>
+            <td>{{ car.브랜드 }}</td>
+            <td>{{ car.모델명 }}</td>
+            <td>{{ car.세부모델명 }}</td>
+            <td>{{ car.차종 }}</td>
+            <td>{{ car.가격 }}</td>
+            <td>{{ car.국가보조금 }}<br>+<br>{{ car.지자체보조금 }}</td>
+            <td>{{ car.할인된_가격 }}</td>
+            <td>{{ car.배터리용량 }}</td>
+            <td>{{ car.복합전비 }}</td>
+            <td>{{ car.주행거리 }}</td>
+            <td>{{ car.충전주기 }}</td>
+            <td>
+                <img src="data:image/png;base64,{{ car.graph_img }}" alt="점수 그래프" />
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

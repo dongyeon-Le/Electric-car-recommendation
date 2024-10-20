@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>전기차 어때? | 로그인</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <header>
+        <div class="homepage-link">
+            <a href="/"><img class="logo" src="{% static 'image/logo.png' %}" alt="Search Logo"></a>
+        </div>
+    </header>
+
+    <main>
+        <div class="main-div">
+            <div class="box login">
+                <form action="/login/" method="POST">
+                    {% csrf_token %}
+                    <div class="input-with-icon id">
+                        <input type="text" class="userid" name="userid" placeholder="아이디">
+                    </div>
+
+                    <div class="input-with-icon pw">
+                        <input type="password" class="userpw" name="password" placeholder="비밀번호">
+                    </div>
+
+                    <button type="submit">로그인</button>
+                </form>
+            </div>
+        </div>
+        <div class="login-links">
+            <a href="/findid">아이디찾기</a> |
+            <a href="/findpw">비밀번호찾기</a> |
+            <a href="/signup">회원가입</a>
+        </div>
+    </main>
+    <script>
+        {% if messages %}
+            {% for message in messages %}
+                alert("{{ message }}");
+            {% endfor %}
+        {% endif %}
+    </script>
+</body>
+</html>

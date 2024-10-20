@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전기차 살까? 말까?</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/default.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ev2.css' %}">
+</head>
+<body>
+    <div class="progress-container">
+        <div class="progress-step active" data-step="1">1</div>
+        <span class="progress-separator"> > </span>
+        <div class="progress-step" data-step="2">2</div>
+        <span class="progress-separator"> > </span>
+        <div class="progress-step" data-step="3">3</div>
+        <span class="progress-separator"> > </span>
+        <div class="progress-step" data-step="4">4</div>
+        <span class="progress-separator"> > </span>
+        <div class="progress-step" data-step="5">5</div>
+    </div>
+    <div class="content">
+        <h1>예산을 선택하세요</h1>
+        <div class="card-container">
+            <div class="card" data-budget="1">
+                <img src="{% static 'image/car/1000.png' %}" alt="1000만원대">
+                <h2>1000만원대 이하</h2>
+                <p>합리적인 가격의 차량을 찾고 있어요</p>
+            </div>
+            <div class="card" data-budget="2">
+                <img src="{% static 'image/car/2000.png' %}" alt="2000만원대">
+                <h2>2000만원대 이하</h2>
+                <p>적당한 가격대의 차량을 원해요</p>
+            </div>
+            <div class="card" data-budget="3">
+                <img src="{% static 'image/car/3000.png' %}" alt="3000만원대">
+                <h2>3000만원대 이하</h2>
+                <p>가성비와 성능을 둘 다 고려해요</p>
+            </div>
+            <div class="card" data-budget="4">
+                <img src="{% static 'image/car/4000.png' %}" alt="4000만원대">
+                <h2>4000만원대 이하</h2>
+                <p>고급스러운 차량을 원해요</p>
+            </div>
+            <div class="card" data-budget="5">
+                <img src="{% static 'image/car/5000.png' %}" alt="5000만원대">
+                <h2>5000만원대 이하</h2>
+                <p>최고의 성능과 스타일을 추구해요</p>
+            </div>
+            <div class="card" data-budget="6">
+                <img src="{% static 'image/car/6000.png' %}" alt="6000만원 이상">
+                <h2>6000만원 이상</h2>
+                <p>프리미엄 차량만이 만족스러워요</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        const currentStep = 3;
+
+        // 진행 상태를 설정하는 함수
+        function setProgress(step) {
+            document.querySelectorAll('.progress-step').forEach((element, index) => {
+                if (index < step) {
+                    element.classList.add('active');
+                } else {
+                    element.classList.remove('active');
+                }
+            });
+        }
+
+        // 페이지 로드 시 현재 단계 설정
+        setProgress(currentStep);
+
+        // Django 템플릿에서 type과 brand 값을 가져오기
+        const type = "{{ type }}";
+        const brand = "{{ brand }}";
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', () => {
+                // data-budget 값을 가져와서 price에 설정
+                const price = card.getAttribute('data-budget');
+
+                // 페이지 이동
+                window.location.href = `/evtest?type=${encodeURIComponent(type)}&brand=${encodeURIComponent(brand)}&price=${encodeURIComponent(price)}`;
+            });
+        });
+    </script>
+</body>
+</html>

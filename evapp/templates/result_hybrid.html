@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>하이브리드 차량 정보</title>
+    {% load static %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+            background-image: url('/static/image/paper.jpg');
+            background-size: cover; /* 이미지 크기를 배경에 맞게 조정 */
+            background-position: center; /* 이미지 위치 중앙 */
+            background-repeat: no-repeat; /* 이미지 반복하지 않음 */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            text-align: center;
+            color: #014fa2;
+            margin-bottom: 20px;
+        }
+        .card-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1600px;
+            margin-bottom: 20px;
+        }
+        .card-row.centered {
+            justify-content: center;
+        }
+        .card {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.2s;
+            width: 300px;
+            text-align: center;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .image-container {
+            position: relative;
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .score-tooltip {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .image-container:hover .score-tooltip {
+            opacity: 1; /* 호버 시 점수가 나타남 */
+        }
+        .card-content {
+            padding: 15px;
+            text-align: center;
+        }
+        .card-content h3, .card-content p {
+            margin: 8px 0;
+        }
+        .info-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>하이브리드 차량 정보 | TOP 5</h1>
+
+    <!-- 첫 번째 행 (위쪽 3개의 카드) -->
+    <div class="card-row">
+        {% for car in results|slice:":3" %}
+        <div class="card">
+            <div class="image-container">
+                <input type="hidden" value="{{ car.id }}">
+                <h3>{{ car.브랜드 }} {{ car.모델명 }}</h3>
+                <img src="{% static 'image/carimg/' %}{{ car.사진 }}" alt="{{ car.모델명 }}">
+                <div class="score-tooltip">
+                    점수: {{ car.score }}
+                </div>
+            </div>
+            <div class="card-content">
+                <p><strong>{{ car.세부모델명 }}</strong></p>
+                <div class="info-line">
+                    <p>차종: <strong>{{ car.차종 }}</strong></p>
+                </div>
+                <div class="info-line">
+                    <p>가격: <strong>{{ car.가격 }}</strong></p>
+                </div>
+                <div class="info-line">
+                    <p>연비: <strong>{{ car.복합연비 }}</strong></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- 두 번째 행 (아래쪽 2개의 카드) -->
+    <div class="card-row centered">
+        {% for car in results|slice:"3:5" %}
+        <div class="card">
+            <div class="image-container">
+                <img src="{% static 'image/carimg/' %}{{ car.사진 }}" alt="{{ car.모델명 }}">
+                <div class="score-tooltip">
+                    점수: {{ car.score }}
+                </div>
+            </div>
+            <div class="card-content">
+                <h3>{{ car.브랜드 }} {{ car.모델명 }}</h3>
+                <p><strong>{{ car.세부모델명 }}</strong></p>
+                <div class="info-line">
+                    <p>차종: <strong>{{ car.차종 }}</strong></p>
+                </div>
+                <div class="info-line">
+                    <p>가격: <strong>{{ car.가격 }}</strong></p>
+                </div>
+                <div class="info-line">
+                    <p>연비: <strong>{{ car.복합연비 }}</strong></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

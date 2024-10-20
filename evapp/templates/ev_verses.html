@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>EV Result Test</title>
+    {% load static %}
+    {% load humanize %}
+    <link rel="stylesheet" href="{% static 'css/ev_verses.css' %}">
+</head>
+<body>
+    <h1>EV 상세 정보</h1>
+    <div class="container">
+        <!-- EV 상세 정보 카드 -->
+        <div class="card" id="ev-card">
+            <div class="card-content">
+                <h2>{{ ev_car_spec.브랜드 }} {{ ev_car_spec.모델명 }}</h2>
+                <div class="image-container">
+                    <img src="{% static 'image/carimg/' %}{{ ev_car_spec.사진 }}" alt="{{ ev_car_spec.모델명 }}">
+                    <div class="image-tooltip">
+                        <p>배터리: <strong>{{ ev_car_spec.배터리_용량 }}</strong></p>
+                        <p>전비: <strong>{{ ev_car_spec.복합전비 }} km/kWh</strong></p>
+                        <p>주행거리: <strong>{{ ev_car_spec.복합_주행거리 }}</strong></p>
+                    </div>
+                </div>
+                <p><strong>{{ ev_car_spec.세부모델명 }}</strong></p>
+                <div class="result-item">
+                    <span>실 구매가:</span>
+                    <strong>{{ price|floatformat:0|intcomma }} 원</strong>
+                </div>
+                <div class="result-item">
+                    <span>연간 유류비:</span>
+                    <strong>{{ charging_fee|floatformat:0|intcomma }} 원</strong>
+                </div>
+                <div class="result-item">
+                    <span>총 자동차세:</span>
+                    <strong>{{ total_car_fee|floatformat:0|intcomma }} 원</strong>
+                    <div class="tooltip">
+                        {% for fee in car_fee_list %}
+                        <div><strong>{{ forloop.counter }}년차:</strong> {{ fee|floatformat:0|intcomma }} 원</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 비교 차량 정보 카드2 -->
+        <div class="card2" id="compare-card" style="display: none;"></div>
+    </div>
+
+    <!-- 이미지 및 그래프 컨테이너 -->
+    <div class="image-graph-container">
+        <div class="graph2-container">
+            <img src="data:image/png;base64,{{ used_img }}" alt="가격 추이 그래프">
+        </div>
+        <div id="graph-container"></div>
+    </div>
+
+    <!-- 비교 차량 카드 -->
+    <div class="compare-container">
+        <div class="compare-card" onclick="showCarDetails('car1')">
+            <h2>{{ car1.브랜드 }} {{ car1.모델명 }}</h2>
+            <div class="compare-image-container">
+                <img src="{% static 'image/carimg/' %}{{ car1.사진 }}" alt="{{ car1.모델명 }}">
+            </div>
+            <p><strong>{{ car1.세부모델명 }}</strong></p>
+        </div>
+        <div class="compare-card" onclick="showCarDetails('car2')">
+            <h2>{{ car2.브랜드 }} {{ car2.모델명 }}</h2>
+            <div class="compare-image-container">
+                <img src="{% static 'image/carimg/' %}{{ car2.사진 }}" alt="{{ car2.모델명 }}">
+            </div>
+            <p><strong>{{ car2.세부모델명 }}</strong></p>
+        </div>
+        <div class="compare-card" onclick="showCarDetails('car3')">
+            <h2>{{ car3.브랜드 }} {{ car3.모델명 }}</h2>
+            <div class="compare-image-container">
+                <img src="{% static 'image/carimg/' %}{{ car3.사진 }}" alt="{{ car3.모델명 }}">
+            </div>
+            <p><strong>{{ car3.세부모델명 }}</strong></p>
+        </div>
+    </div>
+    
+
+
+    <script>
+        function showCarDetails(car) {
+            const container = document.querySelector(".container");
+            const compareCard = document.querySelector("#compare-card");
+
+            // container의 gap을 증가시켜 오른쪽에 card2가 부드럽게 나타나도록 함
+            container.style.gap = "40px";
+            compareCard.style.display = "block";
+            compareCard.style.opacity = "1";
+            compareCard.style.transform = "translateX(0)";
+
+            const carDetails = {
+                car1: {
+                    brand: "{{ car1.브랜드 }}",
+                    model: "{{ car1.모델명 }}",
+                    image: "{% static 'image/carimg/' %}{{ car1.사진 }}",
+                    subModel: "{{ car1.세부모델명 }}",
+                    price: parseFloat("{{ car1.가격 }}"),
+                    oilFee: parseFloat("{{ car1_oil_fee }}"),
+                    totalFee: parseFloat("{{ car1_total_fee }}"),
+                    fuel: "{{ car1.복합연비 }} km/L",
+                    engine: "{{ car1.배기량 }}",
+                    fees: [{% for fee in car1_fee_list %}
+                           "<div><strong>{{ forloop.counter }}년차:</strong> {{ fee|floatformat:0|intcomma }} 원</div>",
+                       {% endfor %}],
+                    graph: "{{ ev_vs_g1_img }}",
+                },
+                car2: {
+                    brand: "{{ car2.브랜드 }}",
+                    model: "{{ car2.모델명 }}",
+                    image: "{% static 'image/carimg/' %}{{ car2.사진 }}",
+                    subModel: "{{ car2.세부모델명 }}",
+                    price: parseFloat("{{ car2.가격 }}"),
+                    oilFee: parseFloat("{{ car2_oil_fee }}"),
+                    totalFee: parseFloat("{{ car2_total_fee }}"),
+                    fuel: "{{ car2.복합연비 }} km/L",
+                    engine: "{{ car2.배기량 }}",
+                    fees: [{% for fee in car2_fee_list %}
+                           "<div><strong>{{ forloop.counter }}년차:</strong> {{ fee|floatformat:0|intcomma }} 원</div>",
+                       {% endfor %}],
+                    graph: "{{ ev_vs_g2_img }}"
+                },
+                car3: {
+                    brand: "{{ car3.브랜드 }}",
+                    model: "{{ car3.모델명 }}",
+                    image: "{% static 'image/carimg/' %}{{ car3.사진 }}",
+                    subModel: "{{ car3.세부모델명 }}",
+                    price: parseFloat("{{ car3.가격 }}"),
+                    oilFee: parseFloat("{{ car3_oil_fee }}"),
+                    totalFee: parseFloat("{{ car3_total_fee }}"),
+                    fuel: "{{ car3.복합연비 }} km/L",
+                    engine: "{{ car3.배기량 }}",
+                    fees: [{% for fee in car3_fee_list %}
+                           "<div><strong>{{ forloop.counter }}년차:</strong> {{ fee|floatformat:0|intcomma }} 원</div>",
+                       {% endfor %}],
+                    graph: "{{ ev_vs_g3_img }}"
+                }
+            };
+
+            const details = carDetails[car];
+
+            compareCard.innerHTML = `
+                <div class="card-content">
+                    <h2>${details.brand} ${details.model}</h2>
+                    <div class="image-container">
+                        <img src="${details.image}" alt="${details.model}">
+                        <div class="image-tooltip">
+                            <p>연비: <strong>${details.fuel}</strong></p>
+                            <p>배기량: <strong>${details.engine} cc</strong></p>
+                        </div>
+                    </div>
+                    <p><strong>${details.subModel}</strong></p>
+                    <div class="result-item">
+                        <span>가격:</span>
+                        <strong>${details.price.toLocaleString()} 원</strong>
+                    </div>
+                    <div class="result-item">
+                        <span>연간 유류비:</span>
+                        <strong>${details.oilFee.toLocaleString()} 원</strong>
+                    </div>
+                    <div class="result-item">
+                        <span>총 자동차세:</span>
+                        <strong>${details.totalFee.toLocaleString()} 원</strong>
+                        <div class="tooltip">
+                            ${details.fees.join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+
+            // 그래프 이미지 업데이트
+            document.getElementById("graph-container").innerHTML = `
+                <img src="data:image/png;base64,${details.graph}" alt="비교 그래프" style="max-width: 600px; width: 100%; margin-top: 20px;">
+            `;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+                    <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car List</title>
+    {% load static %}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        /* 헤더 영역 */
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            width: 100%;      /* 브라우저 크기에 맞추어 너비를 100%로 설정 */
+            min-width: 1080px;
+            height: 100px;
+            margin-top: 50px;
+        }
+
+        .search-bar {
+            position: relative;
+            width: 600px;
+        }
+
+        .search-bar .logo {
+            position: absolute;
+            top: 50%;                  /* 수직 중앙 정렬 */
+            left: 20px;                /* 검색창 안쪽에 위치 */
+            transform: translateY(-50%);
+            width: 50px;               /* 로고 크기 */
+            height: auto;
+        }
+
+        .search-bar input[type="text"] {
+            width: 100%;               /* 검색창의 전체 너비 */
+            height: 70px;
+            padding: 15px 20px;        /* 검색창 내부 패딩 */
+            padding-left: 80px;        /* 로고와 겹치지 않도록 왼쪽에 충분한 패딩 추가 */
+            border-radius: 50px;
+            border: 2px solid #ccc;
+            font-size: 24px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .search-bar input[type="text"]:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 마우스를 올렸을 때 그림자 */
+        }
+
+        .search-bar input[type="text"]::placeholder {
+            color: #ddd;
+        }
+
+        .search-bar .search-button {
+            position: absolute;
+            top: 50%;                   /* 수직 중앙 정렬 */
+            right: 20px;                /* 검색창 안쪽 오른쪽에 위치 */
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .search-button {
+            width: 50px;   /* 원하는 이미지 크기 설정 */
+            height: auto;
+            cursor: pointer;
+            border: none;  /* 버튼 테두리 제거 */
+        }
+        
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .logo-main {
+            display: block;
+            margin: 20px auto; /* 가운데 정렬 */
+            width: 150px; /* 로고의 너비를 적절히 설정 */
+        }
+
+        .car-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .car-item {
+            display: flex;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none; /* 링크 텍스트 장식 제거 */
+            color: inherit; /* 텍스트 색상 상속 */
+        }
+
+        .car-item:hover {
+            transform: scale(1.05); /* 클릭 시 살짝 확대되는 효과 */
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .car-image {
+            width: 200px;
+            margin-right: 20px;
+        }
+
+        .car-image img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .car-info {
+            flex: 2;
+        }
+
+        .car-info h2 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .car-info p {
+            margin: 5px 0;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        .car-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .car-details p {
+            margin: 2px 0;
+        }
+
+        .car-price {
+            flex: 1;
+            text-align: right;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <!-- 로고 버튼 추가 -->
+    <a href="/"><img class="logo-main" src="{% static 'image/logo.png' %}" alt="Search Logo"></a>
+
+    <div class="container">
+        <ul class="car-list">
+            {% for car in car_modelname %}
+            <a href="https://auto.danawa.com/search/?q={{ car.모델명 }}" class="car-item">
+                <!-- 왼쪽에 이미지 -->
+                <div class="car-image">
+                    <img src="{% static 'image/carimg/' %}{{ car.사진 }}" alt="{{ car.모델명 }}">
+                </div>
+                <!-- 중간에 차량 정보 -->
+                <div class="car-info">
+                    <h2>{{ car.모델명 }}</h2>
+                    <div class="car-details">
+                        <p> {{ car.차종 }}</p>
+                        <strong><p>연료: {{ car.연료 }} </p></strong>
+                    </div>
+                </div>
+                <!-- 오른쪽에 가격 정보 -->
+                <div class="car-price">
+                    출고가: {{ car.최저가격_변환 }}만원 ~ {{ car.최고가격_변환 }}만원
+                </div>
+            </a>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>비교하기</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/verses.css' %}">
+</head>
+<body>
+    <header>
+        <a href="{% url 'home' %}"><img class="logo" src="{% static 'image/느낌표.jpg' %}"></a>
+    </header>
+
+    <main class="main">
+        <div class="main-div column">
+
+        </div>
+        <div class="main-div left">
+            <button id="left-btn">왼쪽 자동차 선택</button>
+            <div class="left-specs"></div>
+        </div>
+
+        <div class="main-div right">
+            <button id="right-btn">오른쪽 자동차 선택</button>
+            <div class="right-specs"></div>
+        </div>
+    </main>
+
+    <div id="left-modal" class="modal">
+        <div class="modal-div">
+            <span class="close left-close">&times;</span>
+            <h2>왼쪽 자동차 선택</h2>
+            <input type="text" id="left-search" placeholder="검색">
+            <select id="left-brand"><option value="">브랜드 선택</option></select>
+            <select id="left-type"><option value="">차종 선택</option></select>
+            <select id="left-fuel"><option value="">연료 선택</option></select>
+            <select id="left-model"><option value="">모델 선택</option></select>
+            <select id="left-detailed-model"><option value="">세부모델 선택</option></select> <!-- 세부 모델 선택 박스 추가 -->
+            <button id="left-confirm">확인</button>
+        </div>
+    </div>
+
+    <!-- 오른쪽 모달도 동일하게 수정 -->
+    <div id="right-modal" class="modal">
+        <div class="modal-div">
+            <span class="close right-close">&times;</span>
+            <h2>오른쪽 자동차 선택</h2>
+            <input type="text" id="right-search" placeholder="검색">
+            <select id="right-brand"><option value="">브랜드 선택</option></select>
+            <select id="right-type"><option value="">차종 선택</option></select>
+            <select id="right-fuel"><option value="">연료 선택</option></select>
+            <select id="right-model"><option value="">모델 선택</option></select>
+            <select id="right-detailed-model"><option value="">세부모델 선택</option></select> <!-- 세부 모델 선택 박스 추가 -->
+            <button id="right-confirm">확인</button>
+        </div>
+    </div>
+
+<script>
+    // 모달 열기/닫기 로직 추가
+    const leftModal = document.getElementById('left-modal');
+    const rightModal = document.getElementById('right-modal');
+    const leftBtn = document.getElementById('left-btn');
+    const rightBtn = document.getElementById('right-btn');
+    const leftClose = document.querySelector('.left-close');
+    const rightClose = document.querySelector('.right-close');
+
+    // 왼쪽 모달 열기
+    leftBtn.onclick = function() {
+        leftModal.style.display = 'block';
+    }
+
+    // 오른쪽 모달 열기
+    rightBtn.onclick = function() {
+        rightModal.style.display = 'block';
+    }
+
+    // 왼쪽 모달 닫기
+    leftClose.onclick = function() {
+        leftModal.style.display = 'none';
+    }
+
+    // 오른쪽 모달 닫기
+    rightClose.onclick = function() {
+        rightModal.style.display = 'none';
+    }
+
+    // 모달 외부 클릭 시 모달 닫기
+    window.onclick = function(event) {
+        if (event.target == leftModal) {
+            leftModal.style.display = 'none';
+        }
+        if (event.target == rightModal) {
+            rightModal.style.display = 'none';
+        }
+    }
+
+    // 페이지 로드 시 브랜드 목록을 가져옴
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/car/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.brands) {
+                    updateSelectBox('left-brand', data.brands);  // 왼쪽 브랜드 선택박스 업데이트
+                    updateSelectBox('right-brand', data.brands); // 오른쪽 브랜드 선택박스 업데이트
+                }
+            })
+            .catch(error => console.error('Error fetching brands:', error));
+    });
+
+    // 브랜드 선택 시 차종 목록 가져오기
+    document.getElementById('left-brand').addEventListener('change', function() {
+        const brand = this.value;
+        if (brand) {
+            fetch(`/api/car/?brand=${brand}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.types) {
+                        updateSelectBox('left-type', data.types);
+                        resetSelectBox('left-fuel');
+                        resetSelectBox('left-model');
+                    }
+                })
+                .catch(error => console.error('Error fetching car types:', error));
+        }
+    });
+
+    // 차종 선택 시 연료 목록 가져오기
+    document.getElementById('left-type').addEventListener('change', function() {
+        const brand = document.getElementById('left-brand').value;
+        const car_type = this.value;
+        if (car_type) {
+            fetch(`/api/car/?brand=${brand}&car_type=${car_type}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.fuels) {
+                        updateSelectBox('left-fuel', data.fuels);
+                        resetSelectBox('left-model');
+                    }
+                })
+                .catch(error => console.error('Error fetching fuels:', error));
+        }
+    });
+
+    // 연료 선택 시 모델 목록 가져오기
+    document.getElementById('left-fuel').addEventListener('change', function() {
+        const brand = document.getElementById('left-brand').value;
+        const car_type = document.getElementById('left-type').value;
+        const fuel = this.value;
+        if (fuel) {
+            fetch(`/api/car/?brand=${brand}&car_type=${car_type}&fuel=${fuel}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.models) {
+                        updateSelectBox('left-model', data.models);
+                    }
+                })
+                .catch(error => console.error('Error fetching models:', error));
+        }
+    });
+
+    // 선택 박스를 업데이트하는 함수
+    function updateSelectBox(selectId, options) {
+        const selectBox = document.getElementById(selectId);
+        selectBox.innerHTML = '<option value="">선택</option>'; // 기본 선택 옵션
+
+        options.forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option;
+            opt.innerHTML = option;
+            selectBox.appendChild(opt);
+        });
+    }
+
+    // 선택 박스 리셋 함수
+    function resetSelectBox(selectId) {
+        const selectBox = document.getElementById(selectId);
+        selectBox.innerHTML = '<option value="">선택</option>';
+    }
+
+    // 왼쪽 모달에서 확인 버튼 클릭 시 스펙 가져오기
+    document.getElementById('left-confirm').addEventListener('click', function() {
+        const brand = document.getElementById('left-brand').value;
+        const car_type = document.getElementById('left-type').value;
+        const fuel = document.getElementById('left-fuel').value;
+        const model = document.getElementById('left-model').value;
+
+        if (brand && car_type && fuel && model) {
+            fetch(`/api/spec/?brand=${brand}&car_type=${car_type}&fuel=${fuel}&model=${model}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.specs) {
+                        displaySpecs('left', data.specs);  // 왼쪽 스펙을 표시
+                        leftModal.style.display = 'none';  // 모달 닫기
+                    } else {
+                        console.error('Error fetching specs:', data.error);
+                    }
+                })
+                .catch(error => console.error('Error fetching specs:', error));
+        } else {
+            alert('모든 값을 선택해주세요.');
+        }
+    });
+
+    // 오른쪽 모달에서 확인 버튼 클릭 시 스펙 가져오기
+    document.getElementById('right-confirm').addEventListener('click', function() {
+        const brand = document.getElementById('right-brand').value;
+        const car_type = document.getElementById('right-type').value;
+        const fuel = document.getElementById('right-fuel').value;
+        const model = document.getElementById('right-model').value;
+
+        if (brand && car_type && fuel && model) {
+            fetch(`/api/spec/?brand=${brand}&car_type=${car_type}&fuel=${fuel}&model=${model}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.specs) {
+                        displaySpecs('right', data.specs);  // 오른쪽 스펙을 표시
+                        rightModal.style.display = 'none';  // 모달 닫기
+                    } else {
+                        console.error('Error fetching specs:', data.error);
+                    }
+                })
+                .catch(error => console.error('Error fetching specs:', error));
+        } else {
+            alert('모든 값을 선택해주세요.');
+        }
+    });
+
+    // 스펙을 화면에 표시하는 함수
+    function displaySpecs(side, specs) {
+        const specDiv = document.querySelector(`.${side}-specs`);
+        specDiv.innerHTML = `
+            <h3>${specs.브랜드} ${specs.모델명}</h3>
+            <p>차종: ${specs.차종}</p>
+            <p>트림: ${specs.트림명}</p>
+            <p>가격: ${specs.가격}</p>
+            <p>전장: ${specs.전장}</p>
+            <p>전폭: ${specs.전폭}</p>
+            <p>전고: ${specs.전고}</p>
+            <p>엔진형식: ${specs.엔진형식}</p>
+            <p>배기량: ${specs.배기량}</p>
+            <p>최고출력: ${specs.최고출력}</p>
+            <p>최대토크: ${specs.최대토크}</p>
+            <!-- 필요한 스펙들을 계속 추가할 수 있음 -->
+        `;
+    }
+</script>
+</body>
+</html>

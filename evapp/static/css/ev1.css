@@ -1,0 +1,288 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-container {
+    display: flex;
+    gap: 2em;
+    flex-wrap: wrap;
+    max-width: 90vw;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.85);
+    width: 300px;
+    padding: 2em;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card2 {
+    background-color: rgba(255, 255, 255, 0.85);
+    width: 300px;
+    padding: 2em;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 1.2em;
+}
+
+.address-container {
+    background-color: rgba(255, 255, 255, 0.85);
+    width: 430px;
+    height: auto;
+    padding: 2em;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 1.2em;
+}
+
+.address-box {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-container input {
+    width: 100%; /* 너비를 80%로 설정 */
+    max-width: 300px;
+    padding: 0.5em;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.85);
+    font-size: 1em;
+    margin-bottom: 10px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input-container button {
+    padding: 0.5em;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: #A9F5D0;
+    color: black;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.input-container button:hover {
+    background-color: #82E0AC;
+}
+
+.card img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin-bottom: 1em;
+}
+
+.card:hover img {
+    transform: rotate(5deg) scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.card h2 {
+    font-size: 2em;
+    margin: 0.5em 0;
+    color: #333;
+}
+
+.card p {
+    font-size: 1.2em;
+    color: #666;
+}
+
+.image-group {
+    height: 270px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.image-row {
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+}
+
+.image-row img {
+    width: 150px;
+    height: auto;
+}
+
+.single-image img {
+    width: 200px;
+    height: auto;
+    margin-bottom: 0.5em;
+}
+
+.nothing-div {
+    width: 250px;
+    margin-top: 20px;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+}
+
+.nothing-div a {
+    text-decoration: none;
+}
+
+.nothing {
+    font-size: 1.5em;
+    color: #333;
+    text-align: center;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.nothing-div:hover .nothing {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.year-form input[type="number"] {
+    width: 100%; /* 너비를 80%로 설정 */
+    max-width: 150px; /* 최대 너비를 250px로 제한 */
+    padding: 0.5em;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.85);
+    font-size: 2.3em;
+    margin: 20px 0 20px 0;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.year-form {
+    width: 100%;
+    box-sizing: border-box; /* 패딩과 테두리를 포함하여 너비를 맞춤 */
+}
+
+.year-form input[type="number"], .year-form button {
+    width: 100%; /* 입력 필드와 버튼의 너비를 전체로 설정 */
+    box-sizing: border-box; /* 테두리와 패딩을 너비에 포함 */
+}
+
+.year-form input[type="number"]:focus {
+    border-color: rgba(92, 184, 92, 0.6); /* 초록색의 연한 톤으로 조정 */
+    outline: none;
+    box-shadow: 0 0 5px rgba(92, 184, 92, 0.4);
+}
+
+.year-form button, .submit-btn {
+    width: 100%;
+    padding: 0.8em;
+    background-color: #A9F5D0; /* 기본 민트색 배경 */
+    color: #333; /* 짙은 색 텍스트 */
+    border: none; /* 테두리 없음 */
+    border-radius: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.year-form button:hover, .submit-btn:hover {
+    background-color: #82E0AC; /* 호버 시 더 어두운 민트색 */
+}
+
+.year-form select {
+    width: 80%; /* 입력 필드와 select 요소의 너비를 동일하게 설정 */
+    max-width: 200px; /* 동일한 최대 너비를 설정 */
+    padding: 0.8em;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.85);
+    font-size: 1em;
+    color: #333;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin: 1em; /* 가운데 정렬 */
+    box-sizing: border-box; /* 패딩과 테두리를 너비에 포함 */
+    cursor: pointer;
+    text-align: left;
+    text-align-last: center;
+}
+
+.year-form input[type="number"]:focus,
+.year-form select:focus {
+    border-color: #A9F5D0;
+    outline: none;
+    box-shadow: 0 0 5px rgba(169, 245, 208, 0.5);
+}
+
+/* 애니메이션 정의 */
+@keyframes fade-out {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes move-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100vw); }
+}
+
+/* 사라짐 애니메이션 적용 클래스 */
+.fade {
+    animation: fade-out 1s forwards;
+}
+
+/* 왼쪽 이동 애니메이션 적용 클래스 */
+.move-left {
+    animation: move-left 2s forwards;
+}
+
+.progress-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+}
+.progress-step {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #bbb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+    transition: background-color 0.3s, transform 0.3s;
+    font-size: 14px; /* 숫자 크기 */
+    font-weight: bold;
+    color: white; /* 숫자 색상 */
+}
+.progress-step.active {
+    background-color: #009688; /* 활성화된 단계 색상 */
+    transform: scale(1.2); /* 활성화된 단계 확대 */
+}
+.progress-separator {
+    font-size: 20px; /* '-' 크기 조절 */
+    color: #555; /* 구분자의 색상 */
+}

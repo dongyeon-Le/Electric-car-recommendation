@@ -1,0 +1,334 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* -------------------------------------------------------------------------- */
+
+.logo {
+    width: 100px;
+    height: auto;
+}
+
+/* -------------------------------------------------------------------------- */
+
+.main-div {
+    width: 1400px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 각 행(세로줄)의 길이 */
+    grid-template-rows: repeat(24, 40px); /* 각 열(가로줄)의 길이 */
+    gap: 10px; /* 자식요소간의 간격 */
+}
+
+.box {
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 50px;
+    border-radius: 15px;
+}
+
+.left {
+    grid-column: 1 / 2;
+    grid-row: 1 / 13;
+    border: 1px solid #dee3eb;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.right {
+    grid-column: 2 / 4;
+    grid-row: 1 / 13;
+    border: 1px solid #dee3eb;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.edit-div {
+    margin: 50px 100px 50px 100px;
+}
+
+.id, .nm, .pw, .em, .addr, .addr2 {
+    width: 100%;
+    height: 60px;
+    font-size: 25px;
+    padding-left: 70px;
+}
+
+.id {
+    border: 2px solid #ccc;
+    border-bottom: none;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.nm, .pw, .em {
+    border: 2px solid #ccc;
+    border-bottom: none;
+}
+
+.addr {
+    border: 2px solid #ccc;
+    border-bottom-left-radius: 15px;
+}
+
+.addr2 {
+    padding-left: 20px;
+    border: 2px solid #ccc;
+    border-bottom-right-radius: 15px;
+    width: 90%;
+}
+
+.edit {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.edit a {
+    position: absolute;
+    right: 30px; /* input의 오른쪽 끝에서 10px 떨어지게 위치 */
+    text-decoration: none;
+    color: black;
+    border: 2px solid black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.edit a:hover {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.edit.a::before {
+    margin-left: 7px;
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png');
+    background-position: -687px -131px; /* 이미지의 특정 부분을 선택합니다 */
+    background-repeat: no-repeat;
+}
+
+.edit.b::before {
+    margin-left: 7px;
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png');
+    background-position: -623px -3px; /* 이미지의 특정 부분을 선택합니다 */
+    background-repeat: no-repeat;
+}
+
+.edit.c::before {
+    margin-left: 7px;
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png');
+    background-position: -687px -131px; /* 이미지의 특정 부분을 선택합니다 */
+    background-repeat: no-repeat;
+}
+
+.edit.d::before {
+    margin-left: 7px;
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png');
+    background-position: -195px -595px; /* 이미지의 특정 부분을 선택합니다 */
+    background-repeat: no-repeat;
+}
+
+.edit.e::before {
+    margin-left: 7px;
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png');
+    background-position: -579px -595px; /* 이미지의 특정 부분을 선택합니다 */
+    background-repeat: no-repeat;
+}
+
+.right-header {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin: 53px 20px 0 0;
+}
+
+
+/* -------------------------------------------------------------------------- */
+
+
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 배경 어둡게 처리 */
+    justify-content: center;
+    align-items: center;
+}
+
+/* 모달 창의 내용 */
+.modal-div {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 500px;
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column; /* 세로 배치 */
+    gap: 10px; /* 각 input 간의 간격 */
+}
+
+.modal-div input {
+    font-size: 20px;
+    border-radius: 50px;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 50px;
+    line-height: 50px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+/* 모달 닫기 버튼 */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #000;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 버튼 스타일 */
+button {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* ------------------------------------------------------------------ */
+
+.user-info {
+    font-size: 20px;  /* 본문 글자 크기 */
+    color: #555;  /* 본문 글자 색상 */
+    line-height: 1.6;  /* 줄 간격 */
+    margin: 10px 0;  /* 항목 간 간격 */
+    text-align: left;  /* 본문 왼쪽 정렬 */
+}
+
+.user-detail {
+    margin-bottom: 10px; /* 각 항목 간 여백 */
+    display: flex; /* 레이블과 값을 나란히 배치 */
+}
+
+.label {
+    font-weight: bold; /* 레이블을 굵게 표시 */
+    width: 150px; /* 레이블의 너비 고정 */
+    margin-left: 30px;
+}
+
+.value {
+    color: #333; /* 값의 색상 */
+    flex: 1; /* 값을 레이블 뒤에 자연스럽게 배치 */
+}
+
+.left-header {
+    display: flex;
+    text-align: left;
+    font-size: 24px;
+    color: #333;
+    margin: 20px;
+}
+
+.user-title {
+    margin-left: 35px;
+}
+
+/* ---------------------------------------------------------------- */
+
+.btn-div {
+    display: flex;
+    flex-direction: column; /* 수직 정렬 */
+    align-items: center; /* 왼쪽 정렬 (필요하면 center로 변경 가능) */
+    gap: 10px; /* 각 링크 간 간격 */
+    margin : 30px;
+}
+
+.btn-div a {
+    display: inline-block;
+    padding: 10px 20px; /* 버튼 내부 여백 */
+    text-decoration: none; /* 링크 밑줄 제거 */
+    background-color: white; /* 버튼 배경 흰색 */
+    color: black; /* 텍스트 색상 검은색 */
+    border: 2px solid black; /* 테두리 검은색 */
+    border-radius: 5px; /* 둥근 모서리 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    font-size: 16px; /* 글자 크기 */
+    cursor: pointer; /* 마우스를 올렸을 때 포인터 모양 */
+    transition: background-color 0.3s ease, color 0.3s ease; /* 호버 효과 전환 */
+    margin: 5px;
+}
+
+.btn-div a:hover {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 효과 */
+}
+
+.delete {
+    font-size: 16px;
+    font-weight: bold;
+    color: red;
+    border: none;
+    border-radius: none;
+    cursor: pointer;
+}
+
+.delete:hover {
+
+}
+
+.modal-div span {
+    display: block; /* flex를 block으로 변경 */
+    text-align: center; /* 중앙 정렬 */
+    margin: 10px auto;
+}

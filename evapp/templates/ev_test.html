@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>전기차 살까? 말까?</title>
+<!--    <link rel="stylesheet" href="{% static 'css/default.css' %}">-->
+    <link rel="stylesheet" href="{% static 'css/result.css' %}">
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=4i2qbbvpg9"></script>
+</head>
+<body>
+    <div class="content">
+        <div class="left-column">
+            <div id="map"></div>
+            <div id="subsidy-plot">
+                <img src="data:image/png;base64,{{ graph_img }}" alt="보조금 비교 그래프">
+            </div>
+        </div>
+        <div class="right-column">
+            <div id="charger-score">
+                <p>충전소 점수</p>
+                <span id="charger-count"></span>
+                <div id="charger-score-bar">
+                    <div id="charger-score-fill"></div>
+                    <span id="charger-score-text">{{ charger_score }}</span>
+                </div>
+            </div>
+            <div id="subsidy-rank">
+                <p>보조금 점수</p>
+                <span id="subsidy-info"></span>
+                <div id="subsidy-rank-bar">
+                    <div id="subsidy-rank-fill"></div>
+                    <span id="subsidy-rank-value">{{ city_rank }}위 / 160위</span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div id="result-div">
+                <div id="result-bar">
+                    <div class="result-segment" id="result-segment-low">하</div>
+                    <div class="result-segment" id="result-segment-mid">중</div>
+                    <div class="result-segment" id="result-segment-high">상</div>
+                    <div class="result-segment" id="result-segment-top">최상</div>
+                </div>
+                <span id="result"></span>
+
+                <span id="result-text"></span>
+
+                <div id="button-container">
+                    <!-- 다음 단계 버튼 폼 -->
+                    <form action="/evtest/result/" method="get" style="display: block;" id="ev-form">
+                        <input type="hidden" name="type" id="type" value="{{ type }}">
+                        <input type="hidden" name="brand" id="brand" value="{{ brand }}">
+                        <input type="hidden" name="price" id="price" value="{{ price }}">
+                        <input type="hidden" name="years" id="years" value="{{ years }}">
+                        <input type="hidden" name="km" id="km" value="{{ km }}">
+                        <input type="hidden" name="distance" id="distance" value="{{ distance }}">
+                        <input type="hidden" name="city" id="city" value="{{ home_word }}">
+                        <button type="submit" class="button-form">나에게 맞는 전기차 보기</button>
+                    </form>
+
+                    <!-- 하이브리드 버튼 폼 -->
+                    <form action="/evtest/result/hybrid/" method="get" style="display: block;" id="hybrid-form">
+                        <input type="hidden" name="type" id="hybrid-type" value="{{ type }}">
+                        <input type="hidden" name="brand" id="hybrid-brand" value="{{ brand }}">
+                        <input type="hidden" name="price" id="hybrid-price" value="{{ price }}">
+                        <input type="hidden" name="years" id="hybrid-years" value="{{ years }}">
+                        <input type="hidden" name="km" id="hybrid-km" value="{{ km }}">
+                        <input type="hidden" name="distance" id="hybrid-distance" value="{{ distance }}">
+                        <button type="submit" class="hybrid-link">하이브리드로 보고싶어요</button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var staticUrl = "{% static 'image/type/' %}";
+        var markerUrl = "{% static 'image/marker/' %}";
+
+        function getChargerImages(chargerType) {
+            switch (chargerType) {
+                case 'AC3상':
+                    return [staticUrl + 'AC3상.png'];
+                case 'AC완속':
+                    return [staticUrl + 'AC완속.png'];
+                case 'DC차데모':
+                    return [staticUrl + 'DC차데모.png'];
+                case 'DC차데모+AC3상':
+                    return [staticUrl + 'DC차데모.png', staticUrl + 'AC3상.png'];
+                case 'DC차데모+AC3상+DC콤보':
+                    return [staticUrl + 'DC차데모.png', staticUrl + 'AC3상.png', staticUrl + 'DC콤보.png'];
+                case 'DC차데모+DC콤보':
+                    return [staticUrl + 'DC차데모.png', staticUrl + 'DC콤보.png'];
+                case 'DC콤보':
+                case 'DC콤보(완속)':
+                    return [staticUrl + 'DC콤보.png'];
+                default:
+                    return [];
+            }
+        }
+
+        var homeLat = {{ homeLat }};
+        var homeLng = {{ homeLng }};
+        var workLat = {{ workLat }};
+        var workLng = {{ workLng }};
+        var path = {{ path|safe }};
+        var distance = {{ distance }};
+        var homeSlow = {{ home_slow }};
+        var homeFast = {{ home_fast }};
+        var workSlow = {{ work_slow }};
+        var workFast = {{ work_fast }};
+
+        // LatLngBounds 객체 생성
+        var bounds = new naver.maps.LatLngBounds();
+        bounds.extend(new naver.maps.LatLng(homeLat, homeLng));
+        bounds.extend(new naver.maps.LatLng(workLat, workLng));
+
+        var map = new naver.maps.Map('map', {
+            center: bounds.getCenter(),
+            zoom: 10
+        });
+
+        map.fitBounds(bounds);
+        map.setZoom(map.getZoom());
+
+        // 집 위치 마커와 500m 원 추가
+        var homeMarker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(homeLat, homeLng),
+            map: map,
+            title: '집 위치'
+        });
+        var homeCircle = new naver.maps.Circle({
+            map: map,
+            center: new naver.maps.LatLng(homeLat, homeLng),
+            radius: 500,
+            fillColor: 'rgba(0, 128, 255, 0.1)',
+            strokeColor: 'blue',
+            strokeOpacity: 0.8,
+            strokeWeight: 2
+        });
+
+        // 회사 위치 마커와 500m 원 추가
+        var workMarker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(workLat, workLng),
+            map: map,
+            title: '회사 위치'
+        });
+        var workCircle = new naver.maps.Circle({
+            map: map,
+            center: new naver.maps.LatLng(workLat, workLng),
+            radius: 500,
+            fillColor: 'rgba(0, 128, 255, 0.1)',
+            strokeColor: 'blue',
+            strokeOpacity: 0.8,
+            strokeWeight: 2
+        });
+
+        // 경로 표시
+        if (path.length > 0) {
+            var polylinePath = path.map(function(point) {
+                return new naver.maps.LatLng(point[1], point[0]);
+            });
+
+            var polyline = new naver.maps.Polyline({
+                map: map,
+                path: polylinePath,
+                strokeColor: '#008000',  // 진한 녹색
+                strokeOpacity: 0.8,
+                strokeWeight: 4
+            });
+        }
+
+        // 경로 길이 표시
+<!--        document.getElementById('distance-info').textContent = "총 거리: " + (distance / 1000).toFixed(2) + " km";-->
+
+        // 충전소 마커 표시
+        var nearbyChargers = {{ nearby_chargers|safe }};
+        nearbyChargers.forEach(function(charger) {
+            var markerImage = charger.type === '완속' ? markerUrl + 'green_marker.png' : markerUrl + 'blue_marker.png';
+            var chargerImages = getChargerImages(charger.charger_type);
+            var imagesHtml = chargerImages.map(src => `<img src="${src}" alt="Charger Type" style="width: auto; height: 50px; margin-right: 5px;" />`).join('');
+
+            var infoContent = `
+                <div class="info-window">
+                    <h3>${charger.name}</h3>
+                    <p>${charger.address}</p>
+                    <div class="info-images">${imagesHtml}</div>
+                    <p><strong>${charger.og_type}</strong></p>
+                    <p><strong>운영기관:</strong> ${charger.company}</p>
+                    <div class="info-details">
+                        <p><strong>회원가:</strong> ${charger.member_price} 원</p>
+                        <p><strong>비회원가:</strong> ${charger.non_member_price} 원</p>
+                    </div>
+                </div>
+
+            `;
+
+            var infoWindow = new naver.maps.InfoWindow({
+                content: infoContent,
+                borderWidth: 0,
+                disableAutoPan: true
+            });
+
+            var chargerMarker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(charger.latitude, charger.longitude),
+                map: map,
+                icon: {
+                    url: markerImage,
+                    size: new naver.maps.Size(32, 32),
+                    scaledSize: new naver.maps.Size(32, 32),
+                    anchor: new naver.maps.Point(16, 32)
+                }
+            });
+
+            var isMouseOverInfoWindow = false;
+
+            naver.maps.Event.addListener(chargerMarker, 'mouseover', function() {
+                infoWindow.open(map, chargerMarker);
+                var infoWindowEl = document.getElementById(`infoWindow-${charger.latitude}-${charger.longitude}`);
+
+                infoWindowEl.addEventListener('mouseenter', function() {
+                    isMouseOverInfoWindow = true;
+                });
+
+                infoWindowEl.addEventListener('mouseleave', function() {
+                    isMouseOverInfoWindow = false;
+                    infoWindow.close();
+                });
+            });
+
+            naver.maps.Event.addListener(chargerMarker, 'mouseout', function() {
+                setTimeout(function() {
+                    if (!isMouseOverInfoWindow) {
+                        infoWindow.close();
+                    }
+                }, 100);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var chargerInfoText = `
+                집 500M 이내 - 완속 충전소: <strong>${homeSlow}개</strong>, 급속 충전소: <strong>${homeFast}개</strong> <br>
+                회사 500M 이내 - 완속 충전소: <strong>${workSlow}개</strong>, 급속 충전소: <strong>${workFast}개</strong>
+            `;
+            var chargerScore = {{ charger_score }};
+            var chargerMaxScore = 200;
+            var chargerScoreFill = document.getElementById('charger-score-fill');
+
+            document.getElementById('charger-count').innerHTML = chargerInfoText;
+            document.getElementById('charger-score-text').textContent = chargerScore;
+
+            var fillPercentage = (chargerScore / chargerMaxScore) * 100;
+            chargerScoreFill.style.width = fillPercentage + '%';
+
+            var subsidy_rank = 160 - {{ city_rank }}
+
+            var subsidyText = `
+                전체 지역 160개 중 <strong>{{ home_word }}</strong> 지역은 <strong>{{ city_rank }}등</strong> 입니다.
+            `;
+            var subsidyMaxScore = 160;
+            var subsidyRankFill = document.getElementById('subsidy-rank-fill');
+
+            document.getElementById('subsidy-info').innerHTML = subsidyText;
+            document.getElementById('subsidy-rank-value').textContent = subsidy_rank;
+
+            var subsidyPer = (subsidy_rank / subsidyMaxScore) * 100;
+            subsidyRankFill.style.width = subsidyPer + '%';
+
+            var resultScore = chargerScore + subsidy_rank
+
+            var resultText = `
+                총점: <strong>${resultScore}</strong>
+            `;
+            document.getElementById('result').innerHTML = resultText;
+
+            if (resultScore < 200) {
+                const segment = document.getElementById('result-segment-low');
+                segment.classList.add('active-segment');
+                segment.style.borderTopLeftRadius = '15px';
+                segment.style.borderBottomLeftRadius = '15px';
+            } else if (resultScore < 300) {
+                document.getElementById('result-segment-mid').classList.add('active-segment');
+            } else if (resultScore < 400) {
+                document.getElementById('result-segment-high').classList.add('active-segment');
+            } else {
+                const segment = document.getElementById('result-segment-top');
+                segment.classList.add('active-segment');
+                segment.style.borderTopRightRadius = '15px';
+                segment.style.borderBottomRightRadius = '15px';
+            }
+
+            // 점수와 등급에 따른 결과 메시지 설정
+            var resultMessage = '';
+
+            if (resultScore >= 400) {
+                if (subsidy_rank >= 80) {
+                    resultMessage = '전기차를 구매하시기에 완벽하시네요!!';
+                } else {
+                    resultMessage = '보조금이 적지만 충전소 인프라가 완벽하네요!!';
+                }
+            } else if (resultScore >= 300) {
+                if (subsidy_rank >= 80 && chargerScore >= 150) {
+                    resultMessage = '전기차를 구매하시기에 최적의 조건이네요!!';
+                } else if (subsidy_rank < 80 && chargerScore >= 150) {
+                    resultMessage = '보조금이 적지만 충전소 인프라가 좋네요!!';
+                }
+            } else if (resultScore >= 200) {
+                if (subsidy_rank >= 80) {
+                    resultMessage = '보조금, 충전소 조건이 괜찮으시네요!!';
+                } else {
+                    resultMessage = '보조금은 적지만 충전소 조건이 좋으시네요!!';
+                }
+            } else {
+                if (subsidy_rank >= 80) {
+                    resultMessage = '보조금은 많지만 충전소 인프라가 부족하네요 ㅠㅠ';
+                } else {
+                    resultMessage = '보조금, 충전소 모두 부족하네요 ㅠㅠ';
+                }
+            }
+
+            // 결과 메시지를 result-text에 표시
+            document.getElementById('result-text').textContent = resultMessage;
+
+            document.getElementById("distance").value = distance;
+
+            var evForm = document.getElementById('ev-form');
+            var hybridForm = document.getElementById('hybrid-form');
+            var hybridButton = document.querySelector('#hybrid-form button');
+
+            function checkEvAvailability() {
+                var params = new URLSearchParams({
+                    type: "{{ type }}",
+                    brand: "{{ brand }}",
+                    price: "{{ price }}",
+                    city: "{{ home_word }}",
+                    min_price: "{{ 최소_가격 }}",
+                    max_price: "{{ 최대_가격 }}"
+                });
+
+                fetch(`/evtest/evfilter/?${params.toString()}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        var has_ev = data.has_ev;
+
+                        if (!has_ev) {
+                            evForm.style.display = 'none';
+
+                            // 하이브리드 버튼의 내용을 변경
+                            var hybridButton = document.querySelector('#hybrid-form button');
+                            hybridButton.innerHTML = `
+                                나에게 맞는 전기차가 없어요ㅠㅠ<br>하이브리드로 보기
+                            `;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            // API 호출 실행
+            checkEvAvailability();
+        });
+    </script>
+</body>
+</html>

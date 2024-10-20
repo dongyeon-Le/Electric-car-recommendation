@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전기차 어때?</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+</head>
+<body>
+    <header>
+        <div class="search-bar">
+            <form action="search_allcar/" method="GET">
+                <input type="text" name="search" placeholder="검색어를 입력하세요">
+                <a href="/"><img class="logo" src="{% static 'image/logo.png' %}" alt="Search Logo"></a>
+            </form>
+        </div>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <a href="#">
+                <img src="{% static 'image/brand.png' %}" class="menu-icon">
+                <p>브랜드</p>
+            </a>
+            <div class="submenu">
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=현대">
+                        <img src="{% static 'image/icon/현대.png' %}" class="submenu-icon">
+                        <span>현대</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=기아">
+                        <img src="{% static 'image/icon/기아.png' %}" class="submenu-icon">
+                        <span>기아</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=제네시스">
+                        <img src="{% static 'image/icon/제네시스.png' %}" class="submenu-icon">
+                        <span>제네시스</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=KGM">
+                        <img src="{% static 'image/icon/kgm.png' %}" class="submenu-icon">
+                        <span>KGM</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=르노코리아">
+                        <img src="{% static 'image/icon/르노코리아.png' %}" class="submenu-icon">
+                        <span>르노코리아</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=쉐보레">
+                        <img src="{% static 'image/icon/쉐보레.png' %}" class="submenu-icon">
+                        <span>쉐보레</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=BMW">
+                        <img src="{% static 'image/icon/bmw.png' %}" class="submenu-icon">
+                        <span>BMW</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=벤츠">
+                        <img src="{% static 'image/icon/벤츠.png' %}" class="submenu-icon">
+                        <span>벤츠</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=아우디">
+                        <img src="{% static 'image/icon/아우디.png' %}" class="submenu-icon">
+                        <span>아우디</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=테슬라">
+                        <img src="{% static 'image/icon/테슬라.png' %}" class="submenu-icon">
+                        <span>테슬라</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=폭스바겐">
+                        <img src="{% static 'image/icon/폭스바겐.png' %}" class="submenu-icon">
+                        <span>폭스바겐</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=볼보">
+                        <img src="{% static 'image/icon/볼보.png' %}" class="submenu-icon">
+                        <span>볼보</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=폴스타">
+                        <img src="{% static 'image/icon/폴스타.png' %}" class="submenu-icon">
+                        <span>폴스타</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=포르쉐">
+                        <img src="{% static 'image/icon/포르쉐.png' %}" class="submenu-icon">
+                        <span>포르쉐</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'brandsearch' %}?brand=포드">
+                        <img src="{% static 'image/icon/포드.png' %}" class="submenu-icon">
+                        <span>포드</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="menu">
+            <a href="{% url 'oilsearch' %}">
+                <img src="{% static 'image/engine.png' %}" class="menu-icon">
+                <p>내연기관</p>
+            </a>
+        </div>
+        <div class="menu">
+            <a href="{% url 'evsearch' %}">
+                <img src="{% static 'image/ev.png' %}" class="menu-icon">
+                <p>전기차</p>
+            </a>
+        </div>
+        <div class="menu">
+            <a href="{% url 'hybridsearch' %}">
+                <img src="{% static 'image/hybrid.png' %}" class="menu-icon">
+                <p>하이브리드</p>
+            </a>
+        </div>
+    </div>
+
+    <main>
+        <div class="main-div">
+            <div class="box-div left1">
+                <a href="{% url 'verses' %}"><img src="{% static 'image/스펙.png' %}" class="banner-img"></a>
+            </div>
+            <div class="box-div left2">
+                <a href="{% url 'ev_test' %}"><img src="{% static 'image/전기차비교로고.png' %}" class="banner-img"></a>
+            </div>
+
+            <div class="box-div right">
+                {% if user.is_authenticated %}
+                    <section class="login-section2">
+                        <span class="user-name">{{ user.name }}님</span>|
+                        <a href="/mypage" class="mypage-btn">마이페이지</a>
+                        <a href="/logout" class="logout-btn">로그아웃</a>
+                    </section>
+                {% else %}
+                    <section class="login-section">
+                        <a href="/login" class="login-btn">로그인</a>
+                        <div class="login-links">
+                            <a href="/findid">아이디찾기</a> |
+                            <a href="/findpw">비밀번호찾기</a> |
+                            <a href="/signup">회원가입</a>
+                        </div>
+                    </section>
+                {% endif %}
+            </div>
+
+            <div class="box-div right2">
+                <div id="map"></div>
+            </div>
+        </div>
+    </main>
+
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=4i2qbbvpg9"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var userLat = position.coords.latitude; // 위도
+                    var userLng = position.coords.longitude; // 경도
+
+                    var map = new naver.maps.Map('map', {
+                        center: new naver.maps.LatLng(userLat, userLng),
+                        zoom: 16
+                    });
+
+                    // 사용자의 위치에 마커 표시
+                    var marker = new naver.maps.Marker({
+                        position: new naver.maps.LatLng(userLat, userLng),
+                        map: map,
+                        title: '내 위치'
+                    });
+
+                    var myCircle = new naver.maps.Circle({
+                        map: map,
+                        center: new naver.maps.LatLng(userLat, userLng),
+                        radius: 500,
+                        fillColor: 'rgba(0, 128, 255, 0.1)',
+                        strokeColor: 'blue',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2
+                    });
+
+                    var markerUrl = "{% static 'image/marker/' %}";
+
+                    // 500m 내 충전소 정보 API 호출
+                    fetch(`/api/charger500/?lat=${userLat}&lng=${userLng}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.chargers.forEach(function(charger) {
+                                var markerImage = charger.type === '완속' ? markerUrl + 'green_marker.png' : markerUrl + 'blue_marker.png';
+                                var chargerImages = getChargerImages(charger.charger_type);
+                                var imagesHtml = chargerImages.map(src => `<img src="${src}" alt="Charger Type" style="width: auto; height: 50px; margin-right: 5px;" />`).join('');
+
+                                var infoContent = `
+                                    <div class="info-window">
+                                        <h3>${charger.name}</h3>
+                                        <p>${charger.address}</p>
+                                        <div class="info-images">${imagesHtml}</div>
+                                        <p><strong>${charger.og_type}</strong></p>
+                                        <p><strong>운영기관:</strong> ${charger.company}</p>
+                                        <div class="info-details">
+                                            <p><strong>회원가:</strong> ${charger.member_price} 원</p>
+                                            <p><strong>비회원가:</strong> ${charger.non_member_price} 원</p>
+                                        </div>
+                                    </div>
+                                `;
+
+                                var infoWindow = new naver.maps.InfoWindow({
+                                    content: infoContent,
+                                    borderWidth: 0,
+                                    disableAutoPan: true
+                                });
+
+                                var chargerMarker = new naver.maps.Marker({
+                                    position: new naver.maps.LatLng(charger.latitude, charger.longitude),
+                                    map: map,
+                                    icon: {
+                                        url: markerImage,
+                                        size: new naver.maps.Size(32, 32),
+                                        scaledSize: new naver.maps.Size(32, 32),
+                                        anchor: new naver.maps.Point(16, 32)
+                                    }
+                                });
+
+                                var isMouseOverInfoWindow = false;
+
+                                naver.maps.Event.addListener(chargerMarker, 'mouseover', function() {
+                                    infoWindow.open(map, chargerMarker);
+                                    var infoWindowEl = document.getElementById(`infoWindow-${charger.latitude}-${charger.longitude}`);
+
+                                    infoWindowEl.addEventListener('mouseenter', function() {
+                                        isMouseOverInfoWindow = true;
+                                    });
+
+                                    infoWindowEl.addEventListener('mouseleave', function() {
+                                        isMouseOverInfoWindow = false;
+                                        infoWindow.close();
+                                    });
+                                });
+
+                                naver.maps.Event.addListener(chargerMarker, 'mouseout', function() {
+                                    setTimeout(function() {
+                                        if (!isMouseOverInfoWindow) {
+                                            infoWindow.close();
+                                        }
+                                    }, 100);
+                                });
+                            });
+                        })
+                        .catch(error => console.error("Error fetching charger data:", error));
+                }, function(error) {
+                    console.error("위치 정보를 가져오는데 실패했습니다:", error);
+                });
+            } else {
+                console.error("Geolocation을 지원하지 않는 브라우저입니다.");
+            }
+
+            function getChargerImages(chargerType) {
+                var staticUrl = "{% static 'image/type/' %}";
+                switch (chargerType) {
+                    case 'AC3상':
+                        return [staticUrl + 'AC3상.png'];
+                    case 'AC완속':
+                        return [staticUrl + 'AC완속.png'];
+                    case 'DC차데모':
+                        return [staticUrl + 'DC차데모.png'];
+                    case 'DC차데모+AC3상':
+                        return [staticUrl + 'DC차데모.png', staticUrl + 'AC3상.png'];
+                    case 'DC차데모+AC3상+DC콤보':
+                        return [staticUrl + 'DC차데모.png', staticUrl + 'AC3상.png', staticUrl + 'DC콤보.png'];
+                    case 'DC차데모+DC콤보':
+                        return [staticUrl + 'DC차데모.png', staticUrl + 'DC콤보.png'];
+                    case 'DC콤보':
+                    case 'DC콤보(완속)':
+                        return [staticUrl + 'DC콤보.png'];
+                    default:
+                        return [];
+                }
+            }
+        });
+
+    </script>
+    <script>
+        {% if messages %}
+            {% for message in messages %}
+                alert("{{ message }}");
+            {% endfor %}
+        {% endif %}
+    </script>
+</body>
+</html>

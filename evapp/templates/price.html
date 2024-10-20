@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/verses.css' %}">
+</head>
+<body>
+    <header>
+        <a href="{% url 'home' %}"><img class="logo" src="{% static 'image/느낌표.jpg' %}"></a>
+    </header>
+
+    <main class="main">
+        <!-- 차량 비교 표 -->
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th><button id="left-btn">왼쪽 자동차 선택</button></th>
+                    <th><button id="right-btn">오른쪽 자동차 선택</button></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>브랜드</td>
+                    <td id="left-brand-spec"></td>
+                    <td id="right-brand-spec"></td>
+                </tr>
+                <tr>
+                    <td>모델명</td>
+                    <td id="left-model-spec"></td>
+                    <td id="right-model-spec"></td>
+                </tr>
+                <tr>
+                    <td>세부모델명</td>
+                    <td id="left-detail-model-spec"></td>
+                    <td id="right-detail-model-spec"></td>
+                </tr>
+                <tr>
+                    <td>차종</td>
+                    <td id="left-type-spec"></td>
+                    <td id="right-type-spec"></td>
+                </tr>
+                <tr>
+                    <td>트림명</td>
+                    <td id="left-trim-spec"></td>
+                    <td id="right-trim-spec"></td>
+                </tr>
+                <tr>
+                    <td>가격</td>
+                    <td id="left-price-spec"></td>
+                    <td id="right-price-spec"></td>
+                </tr>
+                <tr>
+                    <td>연료</td>
+                    <td id="left-fuel-spec"></td>
+                    <td id="right-fuel-spec"></td>
+                </tr>
+                <tr>
+                    <td>배기량</td>
+                    <td id="left-displacement-spec"></td>
+                    <td id="right-displacement-spec"></td>
+                </tr>
+                <tr>
+                    <td>복합연비</td>
+                    <td id="left-combined-fuel-efficiency-spec"></td>
+                    <td id="right-combined-fuel-efficiency-spec"></td>
+                </tr>
+                <tr>
+                    <td>고속연비</td>
+                    <td id="left-highway-fuel-efficiency-spec"></td>
+                    <td id="right-highway-fuel-efficiency-spec"></td>
+                </tr>
+                <tr>
+                    <td>도심연비</td>
+                    <td id="left-city-fuel-efficiency-spec"></td>
+                    <td id="right-city-fuel-efficiency-spec"></td>
+                </tr>
+                <tr class="hidden">
+                    <td>보조금_id</td>
+                    <td id="left-subsidy"></td>
+                    <td id="right-subsidy"></td>
+                </tr>
+                <tr id="subsidy-title">
+                    <td colspan="3">보조금</td>
+                </tr>
+                <tr id="subsidy-region">
+                    <td> 지역 선택 </td>
+                    <td>
+                        <select id="left-province-select" data-default-option="도 선택">
+                            <option value="">도 선택</option>
+                        </select>
+                        <select id="left-city-select" data-default-option="시 선택">
+                            <option value="">시 선택</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="right-province-select" data-default-option="도 선택">
+                            <option value="">도 선택</option>
+                        </select>
+                        <select id="right-city-select" data-default-option="시 선택">
+                            <option value="">시 선택</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr id="subsidy-section">
+                    <td> 보조금 </td>
+                    <td>
+                        <span>국가보조금: </span><span id="left-national-subsidy"></span><br>
+                        <span>지자체보조금: </span><span id="left-local-subsidy"></span>
+                    </td>
+                    <td>
+                        <span>국가보조금: </span><span id="right-national-subsidy"></span><br>
+                        <span>지자체보조금: </span><span id="right-local-subsidy"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">유지비용</td>
+                </tr>
+                <tr>
+                    <td>차령 및 주행 거리 선택</td>
+                    <td>
+                        <select id="left-age">
+                            <option value="1">1년</option>
+                            <option value="2">2년</option>
+                            <option value="3">3년</option>
+                            <option value="4">4년</option>
+                            <option value="5">5년</option>
+                            <option value="6">6년</option>
+                            <option value="7">7년</option>
+                            <option value="8">8년</option>
+                            <option value="9">9년</option>
+                            <option value="10">10년</option>
+                            <option value="11">11년</option>
+                            <option value="12">12년 이상</option>
+                        </select>
+
+                        <!-- 주행 거리 선택 -->
+                        <select id="left-km">
+                            <option value="5000">5000 km</option>
+                            <option value="10000">10000 km</option>
+                            <option value="15000" selected>15000 km</option>
+                            <option value="20000">20000 km</option>
+                            <option value="25000">25000 km</option>
+                            <option value="30000">30000 km</option>
+                        </select>
+                    </td>
+                    <td>
+                        <!-- 차령 선택 -->
+                        <select id="right-age">
+                            <option value="1">1년</option>
+                            <option value="2">2년</option>
+                            <option value="3">3년</option>
+                            <option value="4">4년</option>
+                            <option value="5">5년</option>
+                            <option value="6">6년</option>
+                            <option value="7">7년</option>
+                            <option value="8">8년</option>
+                            <option value="9">9년</option>
+                            <option value="10">10년</option>
+                            <option value="11">11년</option>
+                            <option value="12">12년 이상</option>
+                        </select>
+
+                        <!-- 주행 거리 선택 -->
+                        <select id="right-km">
+                            <option value="5000">5000 km</option>
+                            <option value="10000">10000 km</option>
+                            <option value="15000" selected>15000 km</option>
+                            <option value="20000">20000 km</option>
+                            <option value="25000">25000 km</option>
+                            <option value="30000">30000 km</option>
+                        </select>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>자동차세</td>
+                    <td id="left-tax-spec"></td>
+                    <td id="right-tax-spec"></td>
+                </tr>
+                <tr>
+                    <td>유류비</td>
+                    <td id="left-oil-spec"></td>
+                    <td id="right-oil-spec"></td>
+                </tr>
+                <tr>
+                    <td>총 금액</td>
+                    <td id="left-total-cost"></td>
+                    <td id="right-total-cost"></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <!-- 왼쪽 모달 -->
+    <div id="left-modal" class="modal">
+        <div class="modal-div">
+            <span class="close left-close">&times;</span>
+            <h2>왼쪽 자동차 선택</h2>
+            <input type="text" id="left-search" placeholder="검색">
+            <select id="left-brand" data-default-option="브랜드 선택"><option value="">브랜드 선택</option></select>
+            <select id="left-type" data-default-option="차종 선택"><option value="">차종 선택</option></select>
+            <select id="left-fuel" data-default-option="연료 선택"><option value="">연료 선택</option></select>
+            <select id="left-model" data-default-option="모델 선택"><option value="">모델 선택</option></select>
+            <select id="left-detail-model" data-default-option="세부모델 선택"><option value="">세부모델 선택</option></select>
+            <select id="left-trim" data-default-option="트림 선택"><option value="">트림 선택</option></select> <!-- 트림 선택 박스 추가 -->
+            <button id="left-confirm">확인</button>
+        </div>
+    </div>
+
+    <!-- 오른쪽 모달 -->
+    <div id="right-modal" class="modal">
+        <div class="modal-div">
+            <span class="close right-close">&times;</span>
+            <h2>오른쪽 자동차 선택</h2>
+            <input type="text" id="right-search" placeholder="검색">
+            <select id="right-brand" data-default-option="브랜드 선택"><option value="">브랜드 선택</option></select>
+            <select id="right-type" data-default-option="차종 선택"><option value="">차종 선택</option></select>
+            <select id="right-fuel" data-default-option="연료 선택"><option value="">연료 선택</option></select>
+            <select id="right-model" data-default-option="모델 선택"><option value="">모델 선택</option></select>
+            <select id="right-detail-model" data-default-option="세부모델 선택"><option value="">세부모델 선택</option></select>
+            <select id="right-trim" data-default-option="트림 선택"><option value="">트림 선택</option></select>
+            <button id="right-confirm">확인</button>
+        </div>
+    </div>
+    <script src="{% static 'js/price.js' %}"></script>
+</body>
+</html>

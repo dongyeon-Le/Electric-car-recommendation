@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* -------------------------------------------------------------------------- */
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.logo {
+    width: 100px;
+    height: auto;
+}
+
+/* -------------------------------------------------------------------------- */
+
+
+.main-div {
+    width: 600px;
+    margin: auto;
+    display: grid;
+    grid-template-rows: repeat(24, 40px); /* 각 열(가로줄)의 길이 */
+    gap: 10px; /* 자식요소간의 간격 */
+}
+
+.box {
+    width: 100%;
+    height: auto;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;  /* 수직 정렬 */
+    align-items: center;
+    justify-content: center;
+}
+
+
+.login {
+    grid-row: 1 / 13;
+}
+
+/* 입력 필드 스타일 */
+.userid, .email, .name, .userpw, .userpw2 {
+    width: 100%; /* 폼의 입력 필드를 80% 너비로 설정 */
+    height: 60px;
+    font-size: 25px;
+    padding-left: 70px;
+}
+
+.userid {
+    border: 2px solid #ccc;
+    border-bottom: none;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.userpw {
+    border: 2px solid #ccc;
+    border-bottom: none;
+}
+
+.userpw2 {
+    border: 2px solid #ccc;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+#passwordMessage {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.email {
+    border: 2px solid #ccc;
+    border-bottom: none;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.name {
+    border: 2px solid #ccc;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+/* 버튼 스타일 */
+button[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 40px;
+}
+
+/* 버튼 호버 효과 */
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* 부모 컨테이너: relative로 설정 */
+.input-with-icon {
+    position: relative;
+    width: 100%;
+}
+
+/* 이미지 아이콘을 입력 필드의 왼쪽에 배치 */
+.input-img {
+    position: absolute;
+    left: 15px; /* 왼쪽에서 15px 떨어진 위치 */
+    top: 50%; /* 수직 중앙에 배치 */
+    transform: translateY(-50%); /* 중앙 정렬을 위한 변환 */
+    width: 30px; /* 이미지 크기 */
+    height: auto;
+}
+
+.input-with-icon.id::before {
+    margin-left: 10px;
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png');
+    background-position: -687px -127px; /* 이미지의 특정 부분을 선택합니다 */
+    background-repeat: no-repeat;
+}
+
+.input-with-icon.pw::before {
+    margin-left: 10px;
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png');
+    background-position: -624px 0px; /* 이미지의 특정 부분을 선택합니다 */
+    background-repeat: no-repeat;
+}
+
+.input-with-icon.em::before {
+    margin-left: 10px;
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png');
+    background-position: -195px -590px; /* 이미지의 특정 부분을 선택합니다 */
+    background-repeat: no-repeat;
+}
+
+/* ------------------------------------------------------------------------------------------ */

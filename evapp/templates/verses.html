@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>비교하기</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/verses.css' %}">
+</head>
+<body>
+    <header>
+        <a href="{% url 'home' %}"><img class="logo" src="{% static 'image/logo.png' %}"></a>
+    </header>
+
+    <main class="main">
+        <!-- 차량 비교 표 -->
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th><button id="left-btn">왼쪽 자동차 선택</button></th>
+                    <th><button id="right-btn">오른쪽 자동차 선택</button></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 기본 정보 -->
+                <tr>
+                    <td>브랜드</td>
+                    <td id="left-brand-spec"></td>
+                    <td id="right-brand-spec"></td>
+                </tr>
+                <tr>
+                    <td>사진</td>
+                    <td id="left-image-spec"></td>
+                    <td id="right-image-spec"></td>
+                </tr>
+                <tr>
+                    <td>모델명</td>
+                    <td id="left-model-spec"></td>
+                    <td id="right-model-spec"></td>
+                </tr>
+                <tr>
+                    <td>세부모델명</td>
+                    <td id="left-detail-model-spec"></td>
+                    <td id="right-detail-model-spec"></td>
+                </tr>
+                <tr>
+                    <td>차종</td>
+                    <td id="left-type-spec"></td>
+                    <td id="right-type-spec"></td>
+                </tr>
+                <tr>
+                    <td>트림명</td>
+                    <td id="left-trim-spec"></td>
+                    <td id="right-trim-spec"></td>
+                </tr>
+                <tr>
+                    <td>가격</td>
+                    <td id="left-price-spec"></td>
+                    <td id="right-price-spec"></td>
+                </tr>
+
+                <!-- 차량 크기 및 외관 -->
+                <tr>
+                    <td>전장</td>
+                    <td id="left-length-spec"></td>
+                    <td id="right-length-spec"></td>
+                </tr>
+                <tr>
+                    <td>전폭</td>
+                    <td id="left-width-spec"></td>
+                    <td id="right-width-spec"></td>
+                </tr>
+                <tr>
+                    <td>전고</td>
+                    <td id="left-height-spec"></td>
+                    <td id="right-height-spec"></td>
+                </tr>
+                <tr>
+                    <td>축거</td>
+                    <td id="left-wheelbase-spec"></td>
+                    <td id="right-wheelbase-spec"></td>
+                </tr>
+                <tr>
+                    <td>윤거 전</td>
+                    <td id="left-front-tread-spec"></td>
+                    <td id="right-front-tread-spec"></td>
+                </tr>
+                <tr>
+                    <td>윤거 후</td>
+                    <td id="left-rear-tread-spec"></td>
+                    <td id="right-rear-tread-spec"></td>
+                </tr>
+                <tr>
+                    <td>오버행 전</td>
+                    <td id="left-front-overhang-spec"></td>
+                    <td id="right-front-overhang-spec"></td>
+                </tr>
+                <tr>
+                    <td>오버행 후</td>
+                    <td id="left-rear-overhang-spec"></td>
+                    <td id="right-rear-overhang-spec"></td>
+                </tr>
+
+                <!-- 엔진 및 성능 -->
+                <tr>
+                    <td>엔진형식</td>
+                    <td id="left-engine-spec"></td>
+                    <td id="right-engine-spec"></td>
+                </tr>
+                <tr>
+                    <td>배기량</td>
+                    <td id="left-displacement-spec"></td>
+                    <td id="right-displacement-spec"></td>
+                </tr>
+                <tr>
+                    <td>최고출력</td>
+                    <td id="left-max-power-spec"></td>
+                    <td id="right-max-power-spec"></td>
+                </tr>
+                <tr>
+                    <td>최대토크</td>
+                    <td id="left-max-torque-spec"></td>
+                    <td id="right-max-torque-spec"></td>
+                </tr>
+                <tr>
+                    <td>최고속도</td>
+                    <td id="left-max-speed-spec"></td>
+                    <td id="right-max-speed-spec"></td>
+                </tr>
+                <tr>
+                    <td>제로백</td>
+                    <td id="left-acceleration-spec"></td>
+                    <td id="right-acceleration-spec"></td>
+                </tr>
+
+                <!-- 연료 및 배터리 -->
+                <tr>
+                    <td>연료</td>
+                    <td id="left-fuel-spec"></td>
+                    <td id="right-fuel-spec"></td>
+                </tr>
+                <tr>
+                    <td>연료탱크</td>
+                    <td id="left-fuel-tank-spec"></td>
+                    <td id="right-fuel-tank-spec"></td>
+                </tr>
+                <tr>
+                    <td>CO2 배출</td>
+                    <td id="left-co2-emission-spec"></td>
+                    <td id="right-co2-emission-spec"></td>
+                </tr>
+                <tr>
+                    <td>배터리 용량</td>
+                    <td id="left-battery-capacity-spec"></td>
+                    <td id="right-battery-capacity-spec"></td>
+                </tr>
+
+                <!-- 연비 및 전비 -->
+                <tr>
+                    <td>복합연비</td>
+                    <td id="left-combined-fuel-efficiency-spec"></td>
+                    <td id="right-combined-fuel-efficiency-spec"></td>
+                </tr>
+                <tr>
+                    <td>고속연비</td>
+                    <td id="left-highway-fuel-efficiency-spec"></td>
+                    <td id="right-highway-fuel-efficiency-spec"></td>
+                </tr>
+                <tr>
+                    <td>도심연비</td>
+                    <td id="left-city-fuel-efficiency-spec"></td>
+                    <td id="right-city-fuel-efficiency-spec"></td>
+                </tr>
+
+                <!-- 구동 및 변속기 -->
+                <tr>
+                    <td>변속기</td>
+                    <td id="left-transmission-spec"></td>
+                    <td id="right-transmission-spec"></td>
+                </tr>
+                <tr>
+                    <td>굴림방식</td>
+                    <td id="left-drive-type-spec"></td>
+                    <td id="right-drive-type-spec"></td>
+                </tr>
+
+                <!-- 타이어 및 휠 -->
+                <tr>
+                    <td>타이어 전</td>
+                    <td id="left-front-tire-spec"></td>
+                    <td id="right-front-tire-spec"></td>
+                </tr>
+                <tr>
+                    <td>타이어 후</td>
+                    <td id="left-rear-tire-spec"></td>
+                    <td id="right-rear-tire-spec"></td>
+                </tr>
+                <tr>
+                    <td>휠 전</td>
+                    <td id="left-front-wheel-spec"></td>
+                    <td id="right-front-wheel-spec"></td>
+                </tr>
+                <tr>
+                    <td>휠 후</td>
+                    <td id="left-rear-wheel-spec"></td>
+                    <td id="right-rear-wheel-spec"></td>
+                </tr>
+
+                <!-- 안전 및 보조 기능 -->
+                <tr>
+                    <td>주차보조</td>
+                    <td id="left-parking-assist-spec"></td>
+                    <td id="right-parking-assist-spec"></td>
+                </tr>
+                <tr>
+                    <td>주행안전</td>
+                    <td id="left-driving-safety-spec"></td>
+                    <td id="right-driving-safety-spec"></td>
+                </tr>
+                <tr>
+                    <td>보행자 안전</td>
+                    <td id="left-pedestrian-safety-spec"></td>
+                    <td id="right-pedestrian-safety-spec"></td>
+                </tr>
+                <tr>
+                    <td>에어백</td>
+                    <td id="left-airbag-spec"></td>
+                    <td id="right-airbag-spec"></td>
+                </tr>
+
+                <!-- 외부 장비 및 기능 -->
+                <tr>
+                    <td>도어포켓 라이트</td>
+                    <td id="left-door-pocket-light-spec"></td>
+                    <td id="right-door-pocket-light-spec"></td>
+                </tr>
+                <tr>
+                    <td>엠비언트 라이트</td>
+                    <td id="left-ambient-light-spec"></td>
+                    <td id="right-ambient-light-spec"></td>
+                </tr>
+                <tr>
+                    <td>룸미러</td>
+                    <td id="left-room-mirror-spec"></td>
+                    <td id="right-room-mirror-spec"></td>
+                </tr>
+
+                <!-- 내부 장비 및 기능 -->
+                <tr>
+                    <td>승차정원</td>
+                    <td id="left-seating-capacity-spec"></td>
+                    <td id="right-seating-capacity-spec"></td>
+                </tr>
+                <tr>
+                    <td>시트 배열</td>
+                    <td id="left-seat-layout-spec"></td>
+                    <td id="right-seat-layout-spec"></td>
+                </tr>
+                <tr>
+                    <td>시트 재질</td>
+                    <td id="left-seat-material-spec"></td>
+                    <td id="right-seat-material-spec"></td>
+                </tr>
+
+                <!-- 디지털 기능 및 계기판 -->
+                <tr>
+                    <td>계기판</td>
+                    <td id="left-dashboard-spec"></td>
+                    <td id="right-dashboard-spec"></td>
+                </tr>
+                <tr>
+                    <td>스티어링 휠</td>
+                    <td id="left-steering-wheel-spec"></td>
+                    <td id="right-steering-wheel-spec"></td>
+                </tr>
+
+                <!-- 엔터테인먼트 -->
+                <tr>
+                    <td>사운드 시스템</td>
+                    <td id="left-sound-system-spec"></td>
+                    <td id="right-sound-system-spec"></td>
+                </tr>
+                <tr>
+                    <td>스피커</td>
+                    <td id="left-speaker-spec"></td>
+                    <td id="right-speaker-spec"></td>
+                </tr>
+
+                <!-- 트렁크 및 적재 -->
+                <tr>
+                    <td>적재량</td>
+                    <td id="left-cargo-capacity-spec"></td>
+                    <td id="right-cargo-capacity-spec"></td>
+                </tr>
+                <tr>
+                    <td>트렁크</td>
+                    <td id="left-trunk-spec"></td>
+                    <td id="right-trunk-spec"></td>
+                </tr>
+
+                <!-- 기타 장비 및 부가 기능 -->
+                <tr>
+                    <td>에어컨</td>
+                    <td id="left-ac-spec"></td>
+                    <td id="right-ac-spec"></td>
+                </tr>
+                <tr>
+                    <td>엔진 시동</td>
+                    <td id="left-engine-start-spec"></td>
+                    <td id="right-engine-start-spec"></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <!-- 왼쪽 모달 -->
+    <div id="left-modal" class="modal">
+        <div class="modal-div">
+            <span class="close left-close">&times;</span>
+            <h2>왼쪽 자동차 선택</h2>
+            <input type="text" id="left-search" placeholder="검색">
+            <select id="left-brand"><option value="">브랜드 선택</option></select>
+            <select id="left-type"><option value="">차종 선택</option></select>
+            <select id="left-fuel"><option value="">연료 선택</option></select>
+            <select id="left-model"><option value="">모델 선택</option></select>
+            <select id="left-detail-model"><option value="">세부모델 선택</option></select>
+            <select id="left-trim"><option value="">트림 선택</option></select> <!-- 트림 선택 박스 추가 -->
+            <button id="left-confirm">확인</button>
+        </div>
+    </div>
+
+    <!-- 오른쪽 모달 -->
+    <div id="right-modal" class="modal">
+        <div class="modal-div">
+            <span class="close right-close">&times;</span>
+            <h2>오른쪽 자동차 선택</h2>
+            <input type="text" id="right-search" placeholder="검색">
+            <select id="right-brand"><option value="">브랜드 선택</option></select>
+            <select id="right-type"><option value="">차종 선택</option></select>
+            <select id="right-fuel"><option value="">연료 선택</option></select>
+            <select id="right-model"><option value="">모델 선택</option></select>
+            <select id="right-detail-model"><option value="">세부모델 선택</option></select>
+            <select id="right-trim"><option value="">트림 선택</option></select>
+            <button id="right-confirm">확인</button>
+        </div>
+    </div>
+
+    <script src="{% static 'js/verses.js' %}"></script>
+    <script type="text/javascript">
+        var staticUrl = "{% static 'image/carimg/' %}";
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-container {
+    width: 1200px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    justify-content: center;
+    max-width: 90vw;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.85);
+    width: 300px;
+    flex: 1 1 30%; /* 3개씩 배치하기 위해 각 카드의 폭을 30%로 설정 */
+    max-width: 300px; /* 최대 너비 제한 */
+    padding: 2em;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin-bottom: 1em;
+}
+
+.card:hover img {
+    transform: rotate(5deg) scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.card h2 {
+    font-size: 2em;
+    margin: 0.5em 0;
+    color: #333;
+}
+
+.card p {
+    font-size: 1.2em;
+    color: #666;
+}
+
+/* 애니메이션 정의 */
+@keyframes fade-out {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes move-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100vw); }
+}
+
+/* 사라짐 애니메이션 적용 클래스 */
+.fade {
+    animation: fade-out 1s forwards;
+}
+
+/* 왼쪽 이동 애니메이션 적용 클래스 */
+.move-left {
+    animation: move-left 5s forwards;
+}
+
+.progress-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+}
+.progress-step {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #bbb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+    transition: background-color 0.3s, transform 0.3s;
+    font-size: 14px; /* 숫자 크기 */
+    font-weight: bold;
+    color: white; /* 숫자 색상 */
+}
+.progress-step.active {
+    background-color: #009688; /* 활성화된 단계 색상 */
+    transform: scale(1.2); /* 활성화된 단계 확대 */
+}
+.progress-separator {
+    font-size: 20px; /* '-' 크기 조절 */
+    color: #555; /* 구분자의 색상 */
+}

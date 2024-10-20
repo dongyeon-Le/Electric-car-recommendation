@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전기차 살까? 말까?</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/default.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ev1.css' %}">
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> <!-- 다음 주소 찾기 API -->
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=4i2qbbvpg9&submodules=geocoder"></script> <!-- 네이버 지도 API -->
+</head>
+<body>
+    <div class="progress-container">
+        <div class="progress-step active" data-step="1">1</div>
+        <span class="progress-separator"> > </span>
+        <div class="progress-step" data-step="2">2</div>
+        <span class="progress-separator"> > </span>
+        <div class="progress-step" data-step="3">3</div>
+        <span class="progress-separator"> > </span>
+        <div class="progress-step" data-step="4">4</div>
+        <span class="progress-separator"> > </span>
+        <div class="progress-step" data-step="5">5</div>
+    </div>
+
+    <div class="content">
+        <h1>집주소와 회사주소를 입력하세요</h1>
+
+        <div class="address-container">
+            <div class="address-box">
+                <h2>집 주소</h2>
+                <div class="input-container">
+                    <input type="text" id="home-address" placeholder="집 주소를 입력하세요" readonly>
+                    <button type="button" onclick="searchAddress('home')">주소 검색</button>
+                </div>
+            </div>
+
+            <div class="address-box">
+                <h2>회사 주소</h2>
+                <div class="input-container">
+                    <input type="text" id="work-address" placeholder="회사 주소를 입력하세요" readonly>
+                    <button type="button" onclick="searchAddress('work')">주소 검색</button>
+                </div>
+            </div>
+
+            <input type="hidden" id="type" value="{{ type }}">
+            <input type="hidden" id="brand" value="{{ brand }}">
+            <input type="hidden" id="price" value="{{ price }}">
+            <input type="hidden" id="years" value="{{ years }}">
+            <input type="hidden" id="km" value="{{ km }}">
+
+            <button type="button" class="submit-btn" onclick="submitAddresses()">다음단계</button>
+        </div>
+    </div>
+
+    <script>
+        const currentStep = 5;
+
+        // 진행 상태를 설정하는 함수
+        function setProgress(step) {
+            document.querySelectorAll('.progress-step').forEach((element, index) => {
+                if (index < step) {
+                    element.classList.add('active');
+                } else {
+                    element.classList.remove('active');
+                }
+            });
+        }
+
+        // 페이지 로드 시 현재 단계 설정
+        setProgress(currentStep);
+
+        let homeLat, homeLng, workLat, workLng; // 집과 회사의 좌표 저장
+
+        // 다음 주소 찾기 API를 사용하여 주소 검색
+        function searchAddress(type) {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    const fullAddr = data.address; // 선택한 주소
+                    if (type === 'home') {
+                        document.getElementById('home-address').value = fullAddr;
+                        getCoordinates(fullAddr, 'home');
+                    } else if (type === 'work') {
+                        document.getElementById('work-address').value = fullAddr;
+                        getCoordinates(fullAddr, 'work');
+                    }
+                }
+            }).open();
+        }
+
+        // 네이버 지도 Geocoder를 사용하여 주소를 위도와 경도로 변환
+        function getCoordinates(address, type) {
+            naver.maps.Service.geocode({ query: address }, function(status, response) {
+                if (status === naver.maps.Service.Status.OK) {
+                    const coords = response.v2.addresses[0];
+                    const lat = coords.y;
+                    const lng = coords.x;
+
+                    if (type === 'home') {
+                        homeLat = lat;
+                        homeLng = lng;
+                    } else if (type === 'work') {
+                        workLat = lat;
+                        workLng = lng;
+                    }
+                } else {
+                    alert('좌표를 가져올 수 없습니다. 다시 시도해 주세요.');
+                }
+            });
+        }
+
+        // 주소 및 좌표 제출
+        function submitAddresses() {
+            const homeAddress = document.getElementById('home-address').value;
+            const workAddress = document.getElementById('work-address').value;
+
+            // 추가 파라미터 hidden input에서 가져오기
+            const type = document.getElementById('type').value;
+            const brand = document.getElementById('brand').value;
+            const price = document.getElementById('price').value;
+            const years = document.getElementById('years').value;
+            const km = document.getElementById('km').value;
+
+            if (!homeAddress || !workAddress || !homeLat || !homeLng || !workLat || !workLng) {
+                alert('모든 주소와 좌표를 입력 및 선택해 주세요.');
+                return;
+            }
+
+            // 선택한 주소 및 추가 파라미터 정보를 URL로 전송
+            const queryParams = new URLSearchParams({
+                type: type,
+                brand: brand,
+                price: price,
+                years: years,
+                km: km,
+                home: homeAddress,
+                work: workAddress,
+                homeLat: homeLat,
+                homeLng: homeLng,
+                workLat: workLat,
+                workLng: workLng
+            });
+
+            window.location.href = `/evtest?${queryParams.toString()}`;
+        }
+    </script>
+</body>
+</html>

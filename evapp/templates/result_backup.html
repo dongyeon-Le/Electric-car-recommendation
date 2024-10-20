@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>차량 정보</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .details-table th, .details-table td {
+            padding: 6px;
+            border: 1px solid #ddd;
+        }
+        .details-table th {
+            background-color: #2196F3;
+            color: white;
+        }
+    </style>
+    <script>
+        function toggleDetails(modelName) {
+            var details = document.getElementById('details-' + modelName);
+            details.style.display = details.style.display === 'none' ? 'table-row' : 'none';
+        }
+    </script>
+</head>
+<body>
+    <h1>차량 정보</h1>
+    <table>
+        <tr>
+            <th>모델명</th>
+            <th>브랜드</th>
+        </tr>
+        {% for model, details in results.items %}
+        <tr onclick="toggleDetails('{{ model|urlencode }}')" style="cursor: pointer;">
+            <td>{{ model }}</td>
+            <td>{{ details.0.브랜드 }}</td>
+        </tr>
+        <tr id="details-{{ model|urlencode }}" style="display: none;">
+            <td colspan="4">
+                <table class="details-table">
+                    <tr>
+                        <th>세부모델명</th>
+                        <th>차종</th>
+                        <th>할인된 가격</th>
+                        <th>배터리용량</th>
+                        <th>복합 전비</th>
+                        <th>주행거리</th>
+                        <th>충전주기</th>
+                        <th>점수 그래프</th>
+                    </tr>
+                    {% for car in details %}
+                    <tr>
+                        <td>{{ car.세부모델명 }}</td>
+                        <td>{{ car.차종 }}</td>
+                        <td>{{ car.할인된_가격 }}</td>
+                        <td>{{ car.배터리용량 }}</td>
+                        <td>{{ car.복합전비 }}</td>
+                        <td>{{ car.주행거리 }}</td>
+                        <td>{{ car.충전주기 }}</td>
+                        <td><img src="data:image/png;base64,{{ car.graph_img }}" alt="점수 그래프" style="width: 80px; height: 80px;"></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
+
+body {
+    font-family: 'Nanum Gothic';
+    background-image: url('/static/image/paper.jpg');
+    background-size: cover; /* 이미지 크기를 배경에 맞게 조정 */
+    background-position: center; /* 이미지 위치 중앙 */
+    background-repeat: no-repeat; /* 이미지 반복하지 않음 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: auto;
+}
+
+h1 {
+    color: #fff;
+    font-size: 4em;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 1);
+    margin-bottom: 1em;
+    text-align: center;
+}
